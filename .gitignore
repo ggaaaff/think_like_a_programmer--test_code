@@ -15,3 +15,6 @@
 # Sublime Text 
 *.sublime-workspace
 
+# Generic executable
+hello
+
