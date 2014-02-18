@@ -1,15 +1,13 @@
-//2014.02.11 Gustaf - CTG.
+//2014.02.17 Gustaf - CTG.
 
 
 /*
-P R O B L E M : F I N D I N G  T H E  M O D E
-In statistics, the mode of a set of values is the value that appears most often. Write
-code that processes an array of survey data, where survey takers have responded to
-a question with a number in the range 1–10, to determine the mode of the data set.
-For our purpose, if multiple modes exist, any may be chosen.
-
+Suppose the mode problem was modified so that we didn’t know ahead of time how many survey
+responses we would have, but that number came to the program as user input.
 
 */
+
+
 
 
 #include <iostream>
@@ -17,6 +15,8 @@ For our purpose, if multiple modes exist, any may be chosen.
 
 using namespace std;
 
+/*BASED IN: cap03-02-01-statistic_mode.cpp
+*/
 
 
 int compareFunc(const void *voidA, const void *voidB)
@@ -32,10 +32,19 @@ int main()
 {
   cout << "Finding the MODE (any input values) \n";
 
-  const int ARRAY_SIZE = 12;
-  int surveyData[ARRAY_SIZE] = {4, 7, 3, 8, 9, 7, 3, 9, 9, 3, 3, 10};
+  //-- Obtaining the data
+  int ARRAY_SIZE;
+  cout << "Number of survey responses: ";
+  cin >> ARRAY_SIZE;
+  int *surveyData = new int[ARRAY_SIZE]; //Pointer initialized dinamically as an array.
+  for (int i = 0; i < ARRAY_SIZE; i++)
+  {
+    cout << "Survey response " << i + 1 << ": ";
+    cin >> surveyData[i]; //Accessing the pointer as an array.
+  }
 
 
+  //-- Processing the data
   /*Sorting the array in order to organize the data in groups*/
   qsort(surveyData, ARRAY_SIZE, sizeof(int), compareFunc);
 
@@ -62,5 +71,13 @@ int main()
 
 
   cout << mostFrequent << " is the MODE \n";
+
+
+
+
+  //-- Deallocate array
+  delete[] surveyData; 
+
+  cout << "\n";
   return 0;
 }

@@ -22,7 +22,7 @@ using namespace std;
 
 int main()
 {
-  cout << "Finding the MODE \n";
+  cout << "Finding the MODE (input values between 1 and 10) \n";
 
   const int ARRAY_SIZE = 12;
   int surveyData[ARRAY_SIZE] = {4, 7, 3, 8, 9, 7, 3, 9, 9, 3, 3, 10};
