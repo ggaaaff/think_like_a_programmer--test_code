@@ -1,6 +1,7 @@
 //2014.02.18 Gustaf - CTG.
 
-/* EXERCISE:
+
+/* EXERCISE 3-1:
 Are you disappointed we didn’t do more with sorting? I’m here to help. To
 make sure you are comfortable with qsort, 
 

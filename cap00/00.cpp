@@ -18,7 +18,7 @@ g++ helloworld.cpp -o hello
 
 
 //helloworld.cpp
-//2014.02.15 Gustaf - CTG.
+//2014.02.19 Gustaf - CTG.
 
 
 #include <iostream>
@@ -30,9 +30,9 @@ using namespace std;
 
 int main()
 {
-  cout << "Hello world - Linux Mint \n";
+  cout << "Hello world - Linux Mint." << endl;
 
-  cout << "\n";
+  cout << endl;
   return 0;
 }
 
