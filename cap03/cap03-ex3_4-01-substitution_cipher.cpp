@@ -1,4 +1,4 @@
-//2014.02.21 Gustaf - CTG.
+//2014.02.21 - 2014.02.22 Gustaf - CTG.
 
 
 /* EXERCISE 3-4:
@@ -23,17 +23,17 @@ OK - Normal array of 26 elements.
   , 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
 }
 
-- Function to cipher a single character.
-  - Transform the char input from char to a number between 1 and 26.
+OK - Function to cipher a single character.
+  OK - Transform the char input from char to a number between 1 and 26.
 
-- Accept input in upper and lower case.
-- If it is an invalid character convert it to a space.
+OK - Accept input in upper and lower case.
+OK - If it is an invalid character convert it to '@'.
 
-- Do the test with the normal array of letters.
-- Do the test with the changed array of letters.
+OK - Do the test with the normal array of letters.
+OK - Do the test with the changed array of letters.
 
 
-
+Char equivalent in integer:
 A 65    a 97
 B 66    b 98
 C 67    c 99
@@ -47,9 +47,6 @@ X 88    x 120
 Y 89    y 121
 Z 90    z 122
 
-
-
-
 */
 
 
@@ -61,28 +58,35 @@ using namespace std;
 
 char cipherCharacter (char charInput)
 {
-  char cipherArray[26] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'
-                          , 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+  char cipherArray[26] = {'B', 'A', 'D', 'C', 'F', 'E', 'H', 'G', 'J', 'I', 'L', 'K', 'N'
+                          , 'M', 'P', 'O', 'R', 'Q', 'T', 'S', 'V', 'U', 'X', 'W', 'Z', 'Y'
                          };
+  /*
+    char cipherArray[26] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'
+                            , 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+                           };
+  */
+  int number = charInput;
 
-    int number = charInput;
-    if (number >= 65 || number <= 90)
-    {
-      /* code */
-    } else if (number >= 97 || number <= 122)
-    {
-      /* code */
-    } else {
-      //Character invalid.
+  // cout << number << "  -  "; //DEBUG
+  if (number >= 65 && number <= 90)
+  {
+    //Upper case letters
+    number = number % 65;
+  }
+  else if (number >= 97 && number <= 122)
+  {
+    //Lower case letters
+    number = number % 97;
+  }
+  else
+  {
+    //Invalid character
+    return '@';
+  }
 
-    }
-
-  return  cipherArray[ number + ('A' - 1) ];
-
+  return  cipherArray[ number ];
 }
-
-int number;
-
 
 
 
@@ -90,25 +94,21 @@ int main()
 {
   cout << "Substitution cipher." << endl;
 
-  cout << "Enter the text to convert (valid letters in english)." << endl;
-
-
-
+  cout << "Enter the text to convert (valid english letters)." << endl;
   char digitChar = cin.get();
   while (digitChar != 10)   /*Check for the ENTER key.*/
   {
+    cout << cipherCharacter(digitChar);
 
+    /* DEBUG
+        cout << digitChar << " ";
 
-    cout << digitChar << " ";
-
-    int number = digitChar;
-    cout << number << endl;
-
+        int number = digitChar;
+        cout << number << endl;
+    */
 
     digitChar = cin.get();
   }
-
-
 
 
   cout << endl;
