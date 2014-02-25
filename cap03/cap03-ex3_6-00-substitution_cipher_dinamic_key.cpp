@@ -22,7 +22,7 @@ OK - Function to get a random integer given a range. There are two ways:
     NOTE: Requieres to use the compiler option: -std=gnu++11
 
 
-- Using the random number get a letter and eliminate it from an auxiliary array 
+- Using the random number get a letter and eliminate it from an auxiliary array
 and put it in the new array.
 
 
@@ -45,15 +45,15 @@ int main()
 {
   cout << "Hello world - Linux Mint." << endl;
 
+  const int ARRAY_SIZE = 26;
+  char normalLetters[ARRAY_SIZE] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'
+                                     , 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+                                   };
 
-  char normalLetters[26] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'
-                             , 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
-                           };
 
-
-  char substitutionLetters[26] = {   ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '
-                                   , ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '
-                                 };
+  char substitutionLetters[ARRAY_SIZE] = {   ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '
+                                             , ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '
+                                         };
 
 
   cout << endl;
