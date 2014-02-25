@@ -18,14 +18,26 @@ g++ helloworld.cpp -o hello
 
 
 //helloworld.cpp
-//2014.02.19 Gustaf - CTG.
+//2014.02.24 Gustaf - CTG.
+
+
+/* EXERCISE / PROBLEM / OBJECTIVE :
+
+
+
+=== PLAN ===
+
+- 
+- 
+
+*/
+
 
 
 #include <iostream>
 #include <string>
 
 using namespace std;
-
 
 
 int main()
@@ -35,4 +47,3 @@ int main()
   cout << endl;
   return 0;
 }
-
