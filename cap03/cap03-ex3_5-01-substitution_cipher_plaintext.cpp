@@ -20,6 +20,9 @@ OK- Generate two arrays: where number 3 depends on the correspondence between 1 
 3: 'I', 'Q', 'M', 'V', 'S', 'O', 'A', 'Z', 'H', 'D', 'P', 'K', 'C', 'U', 'J', 'F', 'B', 'N', 'X', 'L', 'G', 'Y', 'E', 'T', 'R', 'W'  to plain
 
 
+Example of the logic:
+The A in array ONE is replaced by G in array TWO, 
+then in array THREE in the position (index) for G, we put an A.
 */
 
 
@@ -91,7 +94,7 @@ int main()
   while (digitChar != 10)   /*Check for the ENTER key.*/
   {
     // cout << cipherCharacter(digitChar);
-    encodedData.push_back( cipherCharacter(digitChar, 1) );
+    encodedData.push_back( cipherCharacter(digitChar, 1) ); //To ciphertext
 
     digitChar = cin.get();
   }

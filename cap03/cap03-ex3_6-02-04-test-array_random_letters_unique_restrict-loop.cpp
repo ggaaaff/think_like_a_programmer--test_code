@@ -1,4 +1,4 @@
-//2014.02.27 Gustaf - CTG.
+//2014.02.27 - 2014.03.01 Gustaf - CTG.
 
 
 /* OBJECTIVE :
@@ -50,6 +50,7 @@ IF the last letter and the last slot available are the same.
 
 OK - Add restriction to get the actual letter.
 OK - Resolve the infinite looops.
+OK - Resolve the letter Z showing at the end of the array.
 
 
 */
@@ -71,8 +72,9 @@ int main()
                                      , 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
                                    };
 
-  char availableLetters[ARRAY_SIZE] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'
-                                        , 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+  //2014.03.01 NOTE: Moving the letter 'Z' eliminate the chance that it appear at the end of the final array.
+  char availableLetters[ARRAY_SIZE] = { 'A', 'Z', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'
+                                        , 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y'
                                       };
 
 

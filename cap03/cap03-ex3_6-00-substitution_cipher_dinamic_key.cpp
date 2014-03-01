@@ -13,7 +13,7 @@ Effectively, this means placing a random character in each element of the array.
 
 
 
-=== PLAN ===
+=== (VERY HIGH LEVEL) PLAN ===
 
 OK - Function to get a random integer given a range. There are two ways:
   The old way - http://www.cplusplus.com/reference/cstdlib/rand/
@@ -22,7 +22,7 @@ OK - Function to get a random integer given a range. There are two ways:
     NOTE: Requieres to use the compiler option: -std=gnu++11
 
 
-- Using the random number get a letter and eliminate it from an auxiliary array
+OK - Using the random number get a letter and eliminate it from an auxiliary array
 and put it in the new array.
 
 
