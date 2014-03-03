@@ -215,7 +215,7 @@ int main()
     cout << endl;
     //---
 
-  }
+  }//-- main FOR end.
 
 
 
