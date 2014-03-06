@@ -1,4 +1,4 @@
-//2014.03.05 Gustaf - CTG.
+//2014.03.05 - 2014.03.06 Gustaf - CTG.
 
 
 
@@ -9,24 +9,15 @@ But they can't be repeated.
 
   Remember that you can’t substitute a letter for itself. So the first element can’t be A.
 
-Encapsulate as a function.
-
-
-
-------Information
-http://www.cplusplus.com/reference/vector/vector/
-Compared to the other dynamic sequence containers (deques, lists and forward_lists),
-vectors are very efficient accessing its elements (just like arrays) and relatively efficient adding or removing elements from its end.
-For operations that involve inserting or removing elements at positions other than the end, they perform worse than the others.
-
+Encapsulate in a function.
 
 
 
 === PLAN ===
 
 - Function that return the final array.
-  - Function to check the possible letter.
-  
+  OK- Function that check the next random letter.
+
 - If the letter Z appear at the end, then generate a new substitution array.
 
 
@@ -42,11 +33,60 @@ For operations that involve inserting or removing elements at positions other th
 using namespace std;
 
 
-int main()
-{
-  cout << "Hello world - Linux Mint." << endl;
+const int ARRAY_SIZE = 26;
 
-  const int ARRAY_SIZE = 26;
+int countLetter = 0;
+int lettersAvailableCount = 0;
+
+
+
+
+char checkValidPossibleLetter ( char possibleLetter )
+{
+  // Return a '@' if the check is invalid, otherwise the same input char.
+
+  // The possible letter can not be in the same index position as the normal letters
+  int digitLetter = possibleLetter; // Cast from the char letter to the ASCII integer.
+  int indexLetter = -1;
+  if (digitLetter >= 65 && digitLetter <= 90)
+  {
+    //Upper case letters
+    indexLetter = digitLetter % 65; // Convertion to an index in the normal array [0..25].
+  }
+  else
+  {
+    //Invalid character
+    indexLetter = -1; // If the "availableLetters" array is misconfigured this could lead to an infinite loop.
+    cout << "UNEXPECTED ERROR: the availableLetters array is misconfigured, IT REQUIRE (ENGLISH) UPPERCASE LETTERS." << endl; // ERROR
+  }
+
+  cout << "Letter (char - int - index) " << possibleLetter << " - " << digitLetter << " - " << indexLetter << endl; // DEBUG
+  if ( (indexLetter == -1) || ( (countLetter - 1) == indexLetter) )
+  {
+
+    // If this is the last letter for the last slot (so there are no other possibilities),
+    // then we have to stop the loop and violate this rule
+    if (lettersAvailableCount == 0)
+    {
+      //This solve a potential infinite loop.
+      cout << "Letter verification - We CAN NOT try another letter."  << endl << endl; // DEBUG
+    }
+    else
+    {
+      possibleLetter = '@';
+      cout << "Letter collition - Will try another letter."  << endl << endl; // DEBUG
+    }
+
+  }
+
+
+  return possibleLetter;
+} //-- function
+
+
+
+void generateRandomArray(char *randomArrayLetters)
+{
   char normalLetters[ARRAY_SIZE] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'
                                      , 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
                                    };
@@ -57,17 +97,12 @@ int main()
                                       };
 
 
-  char substitutionLetters[ARRAY_SIZE] = {   ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '
-                                             , ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '
-                                         };
-
-
 
   //Creating the vector.
   vector<char> availableLettersVector;
-  availableLettersVector.reserve(ARRAY_SIZE);
 
   //Initialize vector.
+  availableLettersVector.reserve(ARRAY_SIZE);
   for (int i = 0; i < (ARRAY_SIZE); ++i)
   {
     // NOTE 2014.03.04 ALLWAYS use push_back() to add an element.
@@ -75,16 +110,8 @@ int main()
   }
 
 
-
-
   int randomNumber = 0;
   int lowest = 0, highest = 0, range = 0;
-
-  int countLetter = 0;
-  int lettersAvailableCount = 0;
-
-  char possibleLetter = '@'; //Initialized with invalid value.
-
 
   srand(time(NULL)); //seed - Keep it out of any loop.
   for (int i = 0; i < ARRAY_SIZE; ++i)
@@ -99,7 +126,7 @@ int main()
 
 
     // Testing possible letters
-    possibleLetter = '@'; //Initialized with invalid value.
+    char possibleLetter = '@'; //Initialized with invalid value.
     while ( possibleLetter == '@'  )
     {
       randomNumber = lowest + rand() % range;
@@ -107,42 +134,9 @@ int main()
 
       cout << "Possible letter (char - random number - lettersAvailableCount) " << possibleLetter << " - " << randomNumber << " - " << lettersAvailableCount << endl; // DEBUG
 
+      possibleLetter = checkValidPossibleLetter(possibleLetter); // Return '@' if invalid.
+    } // WHILE ends
 
-      // The possible letter can not be in the same index position as the normal letters
-      int digitLetter = possibleLetter; // Cast from the char letter to the ASCII integer.
-      int indexLetter = -1;
-      if (digitLetter >= 65 && digitLetter <= 90)
-      {
-        //Upper case letters
-        indexLetter = digitLetter % 65; // Convertion to an index in the normal array [0..25].
-      }
-      else
-      {
-        //Invalid character
-        indexLetter = -1; // If the "availableLetters" array is misconfigured this could lead to an infinite loop.
-        cout << "UNEXPECTED ERROR: the availableLetters array is misconfigured, IT REQUIRE (ENGLISH) UPPERCASE LETTERS." << endl; // ERROR
-      }
-
-      cout << "Letter (char - int - index) " << possibleLetter << " - " << digitLetter << " - " << indexLetter << endl; // DEBUG
-      if ( (indexLetter == -1) || ( (countLetter - 1) == indexLetter) )
-      {
-
-        // If this is the last letter for the last slot (so there are no other possibilities),
-        // then we have to stop the loop and violate this rule
-        if (lettersAvailableCount == 0)
-        {
-          //This solve a potential infinite loop.
-          cout << "Letter verification - We CAN NOT try another letter."  << endl << endl; // DEBUG
-        }
-        else
-        {
-          possibleLetter = '@';
-          cout << "Letter collition - Will try another letter."  << endl << endl; // DEBUG
-        }
-
-      }
-
-    }
 
 
     //--- Output for DEBUG
@@ -156,7 +150,7 @@ int main()
 
 
     // We got the new letter
-    substitutionLetters[ countLetter - 1 ] = possibleLetter;
+    randomArrayLetters[ countLetter - 1 ] = possibleLetter;
 
     // Remember initialize the ITERATOR: vector.begin().
     cout << " To erase() " << endl; //DEBUG
@@ -168,10 +162,10 @@ int main()
     cout << endl << "Got the letter: " << possibleLetter  << endl; //DEBUG
     cout << endl;
 
-    cout << "substitutionLetters: ";
+    cout << "randomArrayLetters: ";
     for (int i = 0; i < countLetter; ++i)
     {
-      cout << substitutionLetters[i] << " ";
+      cout << randomArrayLetters[i] << " ";
     }
     cout << endl;
 
@@ -186,14 +180,41 @@ int main()
     cout << endl;
     //---
 
-
   }//-- main FOR end.
 
+} //-- function
 
 
+
+
+void getCipherArray(char *finalArray)
+{
+  // Recursion to prevent the letter Z at the end
+  generateRandomArray(finalArray);
+  while ( finalArray[25] == 'Z' )
+  {
+    cout << "WARNING: Letter Z at the same position. Regenerating array." << endl; //DEBUG
+    cout << endl;
+    cout << endl;
+    generateRandomArray(finalArray);
+  }
+
+} //-- function
+
+
+
+int main()
+{
+  cout << "Hello world - Linux Mint." << endl;
+
+  char substitutionLetters[ARRAY_SIZE] = {   ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '
+                                             , ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '
+                                         };
+
+  getCipherArray(substitutionLetters);
   cout << endl;
-  cout << "The final array." << endl; //DEBUG
-  for (int i = 0; i < countLetter; ++i)
+  cout << "The final array." << endl;
+  for (int i = 0; i < ARRAY_SIZE; ++i)
   {
     cout << substitutionLetters[i] << " ";
   }
