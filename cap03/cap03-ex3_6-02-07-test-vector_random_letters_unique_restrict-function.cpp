@@ -1,4 +1,4 @@
-//2014.03.05 - 2014.03.06 Gustaf - CTG.
+//2014.03.05 - 2014.03.06 - 2014.03.07 Gustaf - CTG.
 
 
 
@@ -15,10 +15,18 @@ Encapsulate in a function.
 
 === PLAN ===
 
-- Function that return the final array.
+OK - Function that return the final array.
   OK- Function that check the next random letter.
 
-- If the letter Z appear at the end, then generate a new substitution array.
+OK - If the letter Z appear at the end, then generate a new substitution array.
+
+  WARNING: 2014.03.07 There is a problem with the randomness of the array when it is regenerated.
+  For no known reason (to me), the program generates the same final array several times until it produces a correct array.
+
+  The test performed was: execute the program several hundred times to generate a log of more than 100MB.
+  If we review the log, we could find that the same final array is generated many times.
+  BUT if you carefully follow the steps you can see that in the same execution of the program a correct final array is generated, 
+  but it is in a next independent call (to the program) that the same array is generated and regenerated.
 
 
 */
@@ -33,11 +41,13 @@ Encapsulate in a function.
 using namespace std;
 
 
+
+//Global variables.
 const int ARRAY_SIZE = 26;
 
-int countLetter = 0;
-int lettersAvailableCount = 0;
-
+int countLetter;
+int lettersAvailableCount;
+//---
 
 
 
@@ -110,10 +120,17 @@ void generateRandomArray(char *randomArrayLetters)
   }
 
 
+
+  //Initialize Global variables.
+  countLetter = 0;
+  lettersAvailableCount = 0;
+
+
+
+  // Local variables
   int randomNumber = 0;
   int lowest = 0, highest = 0, range = 0;
 
-  srand(time(NULL)); //seed - Keep it out of any loop.
   for (int i = 0; i < ARRAY_SIZE; ++i)
   {
     ++countLetter;
@@ -210,8 +227,10 @@ int main()
   char substitutionLetters[ARRAY_SIZE] = {   ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '
                                              , ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '
                                          };
-
+  srand(time(NULL)); //seed - Keep it out of any loop.
   getCipherArray(substitutionLetters);
+
+
   cout << endl;
   cout << "The final array." << endl;
   for (int i = 0; i < ARRAY_SIZE; ++i)
