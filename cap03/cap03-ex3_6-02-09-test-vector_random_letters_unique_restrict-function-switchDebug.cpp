@@ -25,9 +25,10 @@ OK - If the letter Z appear at the end, then generate a new substitution array.
 
   The test performed was: execute the program several hundred times to generate a log of more than 100MB.
   If we review the log, we could find that the same final array is generated many times.
-  BUT if you carefully follow the steps you can see that in the same execution of the program a correct final array is generated, 
+  BUT if you carefully follow the steps you can see that in the same execution of the program a correct final array is generated,
   but it is in a next independent call (to the program) that the same array is generated and regenerated.
 
+OK - Switch to TURN ON/OFF the output of debug messages.
 
 */
 
@@ -51,7 +52,7 @@ int lettersAvailableCount;
 
 
 
-char checkValidPossibleLetter ( char possibleLetter )
+char checkValidPossibleLetter ( char possibleLetter, bool outputDebug )
 {
   // Return a '@' if the check is invalid, otherwise the same input char.
 
@@ -70,7 +71,7 @@ char checkValidPossibleLetter ( char possibleLetter )
     cout << "UNEXPECTED ERROR: the availableLetters array is misconfigured, IT REQUIRE (ENGLISH) UPPERCASE LETTERS." << endl; // ERROR
   }
 
-  cout << "Letter (char - int - index) " << possibleLetter << " - " << digitLetter << " - " << indexLetter << endl; // DEBUG
+  outputDebug ? cout << "Letter (char - int - index) " << possibleLetter << " - " << digitLetter << " - " << indexLetter << endl : false; // DEBUG
   if ( (indexLetter == -1) || ( (countLetter - 1) == indexLetter) )
   {
 
@@ -79,12 +80,12 @@ char checkValidPossibleLetter ( char possibleLetter )
     if (lettersAvailableCount == 0)
     {
       //This solve a potential infinite loop.
-      cout << "Letter verification - We CAN NOT try another letter."  << endl << endl; // DEBUG
+      outputDebug ? cout << "Letter verification - We CAN NOT try another letter."  << endl << endl : false; // DEBUG
     }
     else
     {
       possibleLetter = '@';
-      cout << "Letter collition - Will try another letter."  << endl << endl; // DEBUG
+      outputDebug ? cout << "Letter collition - Will try another letter."  << endl << endl : false; // DEBUG
     }
 
   }
@@ -95,7 +96,7 @@ char checkValidPossibleLetter ( char possibleLetter )
 
 
 
-void generateRandomArray(char *randomArrayLetters)
+void generateRandomArray(char *randomArrayLetters, bool outputDebug)
 {
   char normalLetters[ARRAY_SIZE] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'
                                      , 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
@@ -139,7 +140,7 @@ void generateRandomArray(char *randomArrayLetters)
     highest = lettersAvailableCount;
     range = (highest - lowest) + 1; // This range decreases while the loop progress.
 
-    cout << "GETTING THE LETTER (countLetter - range): " << countLetter << " - " << range << endl; //DEBUG
+    outputDebug ? cout << "GETTING THE LETTER (countLetter - range): " << countLetter << " - " << range << endl : false; //DEBUG
 
 
     // Testing possible letters
@@ -149,52 +150,58 @@ void generateRandomArray(char *randomArrayLetters)
       randomNumber = lowest + rand() % range;
       possibleLetter = availableLettersVector[randomNumber];
 
-      cout << "Possible letter (char - random number - lettersAvailableCount) " << possibleLetter << " - " << randomNumber << " - " << lettersAvailableCount << endl; // DEBUG
+      outputDebug ? cout << "Possible letter (char - random number - lettersAvailableCount) " << possibleLetter << " - " << randomNumber << " - " << lettersAvailableCount << endl : false; // DEBUG
 
-      possibleLetter = checkValidPossibleLetter(possibleLetter); // Return '@' if invalid.
+      possibleLetter = checkValidPossibleLetter(possibleLetter, outputDebug); // Return '@' if invalid.
     } // WHILE ends
 
 
-
     //--- Output for DEBUG
-    cout << "availableLettersVector: ";
-    for (int i = 0; i < availableLettersVector.size(); ++i)
+    if (outputDebug)
     {
-      cout << availableLettersVector[i] << " ";
+      cout << "availableLettersVector: ";
+      for (int i = 0; i < availableLettersVector.size(); ++i)
+      {
+        cout << availableLettersVector[i] << " ";
+      }
+      cout << endl;
     }
-    cout << endl;
     //---
+
+
 
 
     // We got the new letter
     randomArrayLetters[ countLetter - 1 ] = possibleLetter;
 
     // Remember initialize the ITERATOR: vector.begin().
-    cout << " To erase() " << endl; //DEBUG
+    outputDebug ? cout << " To erase() " << endl : false; //DEBUG
     availableLettersVector.erase(availableLettersVector.begin() + randomNumber); //the letter is no longer available.
 
 
-
     //--- Output for DEBUG
-    cout << endl << "Got the letter: " << possibleLetter  << endl; //DEBUG
-    cout << endl;
-
-    cout << "randomArrayLetters: ";
-    for (int i = 0; i < countLetter; ++i)
+    if (outputDebug)
     {
-      cout << randomArrayLetters[i] << " ";
-    }
-    cout << endl;
+      cout << endl << "Got the letter: " << possibleLetter  << endl; //DEBUG
+      cout << endl;
 
-    cout << "availableLettersVector: ";
-    for (int i = 0; i < availableLettersVector.size(); ++i)
-    {
-      cout << availableLettersVector[i] << " ";
-    }
-    cout << endl;
+      cout << "randomArrayLetters: ";
+      for (int i = 0; i < countLetter; ++i)
+      {
+        cout << randomArrayLetters[i] << " ";
+      }
+      cout << endl;
 
-    cout << endl;
-    cout << endl;
+      cout << "availableLettersVector: ";
+      for (int i = 0; i < availableLettersVector.size(); ++i)
+      {
+        cout << availableLettersVector[i] << " ";
+      }
+      cout << endl;
+
+      cout << endl;
+      cout << endl;
+    }
     //---
 
   }//-- main FOR end.
@@ -204,16 +211,19 @@ void generateRandomArray(char *randomArrayLetters)
 
 
 
-void getCipherArray(char *finalArray)
+void getCipherArray(char *finalArray, bool outputDebug)
 {
   // Recursion to prevent the letter Z at the end
-  generateRandomArray(finalArray);
+  generateRandomArray(finalArray, outputDebug);
   while ( finalArray[25] == 'Z' )
   {
-    cout << "WARNING: Letter Z at the same position. Regenerating array." << endl; //DEBUG
-    cout << endl;
-    cout << endl;
-    generateRandomArray(finalArray);
+    if (outputDebug)
+    {
+      cout << "WARNING: Letter Z at the same position. Regenerating array." << endl; //DEBUG
+      cout << endl;
+      cout << endl;
+    }
+    generateRandomArray(finalArray, outputDebug);
   }
 
 } //-- function
@@ -227,8 +237,9 @@ int main()
   char substitutionLetters[ARRAY_SIZE] = {   ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '
                                              , ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '
                                          };
+  bool outputDebug = true; //Switch to TURN ON/OFF the output of debug messages.
   srand(time(NULL)); //seed - Keep it out of any loop.
-  getCipherArray(substitutionLetters);
+  getCipherArray(substitutionLetters, outputDebug);
 
 
   cout << endl;
