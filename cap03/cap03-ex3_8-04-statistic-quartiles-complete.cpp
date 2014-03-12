@@ -132,7 +132,7 @@ void getQuartiles(double *quartilesReturnArray, int observationsArray[], int N )
 
 
   cout << "Quartiles indexes (Q1 Q2 Q3): " << indexQ1 << " - " << indexQ2 << " - " << indexQ3 << endl; // DEBUG
-  cout << "Quartiles (Q1 Q2 Q3): " << Q1 << " - " << Q2 << " - " << Q3 << endl; // DEBUG
+  // cout << "Quartiles (Q1 Q2 Q3): " << Q1 << " - " << Q2 << " - " << Q3 << endl; // DEBUG
 
   quartilesReturnArray[0] = Q1;
   quartilesReturnArray[1] = Q2;
@@ -159,7 +159,6 @@ int main()
   double quartilesArray[QUARTILES_SIZE] = {0.0, 0.0, 0.0};
 
   getQuartiles(quartilesArray, grades, ARRAY_SIZE); // Order the array and get the quartiles.
-
   cout << "Quartiles (Q1 Q2 Q3): " << quartilesArray[0] << " - " << quartilesArray[1] << " - " << quartilesArray[2] << endl;
 
 
