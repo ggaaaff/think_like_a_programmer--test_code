@@ -1,30 +1,15 @@
-//2014.03.10 - 2014.03.11 - 2014.03.12 Gustaf - CTG.
+//2014.03.12 Gustaf - CTG.
 
 
 /* EXERCISE 3-8:
 Write a program that processes an array of student objects and determines
 the grade quartiles — that is, the grade one would need to score as well as or
- better than 25% of the students, 50% of the students, and 75% of the students.
+better than 25% of the students, 50% of the students, and 75% of the students.
 
 
 
 ==== INFORMATION ===
-http://en.wikipedia.org/wiki/Quartile
 
-In descriptive statistics, the quartiles of a ranked set of data values are the three points
-that divide the data set into four equal groups, each group comprising a quarter of the data.
-
-  The first quartile (Q1) is defined as the middle number between the smallest number and the median of the data set.
-  The second quartile (Q2) is the median of the data.
-  The third quartile (Q3) is the middle value between the median and the highest value of the data set.
-
-
-  Two examples:
-  http://en.wikipedia.org/wiki/Quantile#Examples
-
-
-
--------------------------------------------------
 A crystal clear example:
 http://www.vias.org/tmdatanaleng/cc_quartile.html
 
@@ -45,19 +30,12 @@ Assuming a sample of N observations the quartiles are defined as follows
 
 
 
--------------------------------------------------
-A online Calculator:
-http://www.hackmath.net/en/calculator/quartile-q1-q2-q3-calculation
-
-
-
-
 === PLAN ===
 
 OK - Get information.
 OK- Select a method (one out of three) to do the calculation.
   Selected the one from vias.org
-
+OK - Calculate the quartiles.
 
 */
 
@@ -103,9 +81,63 @@ student studentArray[ARRAY_SIZE] =
   { "student20" , 10020, 68 }
 };
 
+
+
 int compareFunc (const void *a, const void *b)
 {
+  // qsort Function.
   return ( *(int *)a - * (int *)b );
+} //-- function
+
+
+
+void getQuartiles(double *quartilesReturnArray, int observationsArray[], int N )
+{
+  // Order the input array (observationsArray), 
+  // calculate and return the quartiles in an array (quartilesReturnArray).
+
+  qsort(observationsArray, N, sizeof(int), compareFunc);
+
+  cout << "Sorted grades:  ";
+  for (int i = 0; i < N; ++i)
+  {
+    cout << observationsArray[i] << " ";
+  }
+  cout << endl << endl;
+
+
+  // Calculate the Quartiles
+  int indexQ1 = 0, indexQ2 = 0, indexQ3 = 0;
+  int Q1 = 0, Q3 = 0;
+  double Q2 = 0.0;
+
+  indexQ1 = (round(0.25 * (N + 1))) - 1;
+  Q1 = observationsArray[indexQ1];
+
+  if ((N % 2) == 0)
+  {
+    cout << " EVEN" << endl;
+    indexQ2 = (N / 2) - 1;
+    Q2 = ( ( observationsArray[indexQ2] + observationsArray[indexQ2 + 1] ) / 2.0);
+  }
+  else
+  {
+    indexQ2 = ((N + 1) / 2) - 1;
+    Q2 = observationsArray[indexQ2];
+    cout << " ODD" << endl;
+  }
+
+  indexQ3 = (round(0.75 * (N + 1))) - 1;
+  Q3 = observationsArray[indexQ3];
+
+
+  cout << "Quartiles indexes (Q1 Q2 Q3): " << indexQ1 << " - " << indexQ2 << " - " << indexQ3 << endl; // DEBUG
+  cout << "Quartiles (Q1 Q2 Q3): " << Q1 << " - " << Q2 << " - " << Q3 << endl; // DEBUG
+
+  quartilesReturnArray[0] = Q1;
+  quartilesReturnArray[1] = Q2;
+  quartilesReturnArray[2] = Q3;
+
 } //-- function
 
 
@@ -122,18 +154,13 @@ int main()
     grades[i] = studentArray[i].grade;
   }
 
-  //Sort and output grades.
-  qsort(grades, ARRAY_SIZE, sizeof(int), compareFunc);
+  //-- Calculate and output the quartiles.
+  const int QUARTILES_SIZE = 3;
+  double quartilesArray[QUARTILES_SIZE] = {0.0, 0.0, 0.0};
 
+  getQuartiles(quartilesArray, grades, ARRAY_SIZE); // Order the array and get the quartiles.
 
-  cout << "Sort grades." << endl;
-  for (int i = 0; i < ARRAY_SIZE; ++i)
-  {
-    cout << grades[i] << " ";
-  }
-  cout << endl << endl;
-
-
+  cout << "Quartiles (Q1 Q2 Q3): " << quartilesArray[0] << " - " << quartilesArray[1] << " - " << quartilesArray[2] << endl;
 
 
 
