@@ -81,6 +81,8 @@ int main()
   cout << myarr[2];
   cout << endl;
 
+  delete myarr; // 2014.03.14 Added after reading about pointers.
+
 
   // Array as parameter
   char myStr[3];
