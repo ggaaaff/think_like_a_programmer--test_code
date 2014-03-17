@@ -32,8 +32,9 @@ int const_refParamFunction (const int &x)
 
 
 // 2014.03.14 I CAN NOT UNDERSTAND WHY: If I put "&outStr" instead of "*outStr" it generates an ERROR.
-void returnParamArray(char *outStr) //OK
-// void returnParamArray(char &outStr) //ERROR
+void returnParamArray( char *outStr ) //OK
+// void returnParamArray( char &outStr   ) //ERROR
+// void returnParamArray( char &outStr[] ) //ERROR
 {
   outStr[0] = 'A';
   outStr[1] = 'B';
@@ -45,14 +46,17 @@ int main()
 {
   cout << "Hello world - Linux Mint." << endl;
 
-  // Memory sharing - reference parameter
   int number = 5;
+
+
+  // Memory sharing - reference parameter
   refParamFunction(number);
   cout << number << endl;
 
 
   // Memory sharing - reference parameter for performance
   const_refParamFunction (number);
+  cout << number << endl;
 
 
 

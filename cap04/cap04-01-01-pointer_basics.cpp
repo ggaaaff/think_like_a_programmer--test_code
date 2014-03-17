@@ -41,19 +41,6 @@ int main()
   delete doublePointer;
 
 
-
-  // ------
-  // we can pass a pointer to a block of memory instead of passing a copy of the block using reference parameters.
-  void refParamFunction (int &x)
-  {
-    x = 10;
-  }
-  int number = 5;
-  refParamFunction(number);
-  cout << number << endl;
-
-
-
   cout << endl;
   return 0;
 }
