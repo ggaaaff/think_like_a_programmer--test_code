@@ -1,4 +1,4 @@
-//2014.03.18 - 2014.03.19 Gustaf - CTG.
+//2014.03.18 - 2014.03.19 - 2014.03.20 Gustaf - CTG.
 
 
 /* P R O B L E M : V A R I A B L E - L E N G T H  S T R I N G  M A N I P U L A T I O N
@@ -46,7 +46,7 @@ typedef char *arrayString;
 
 int length(arrayString s)
 {
-  // Determine the length of a string array. 
+  // Determine the length of a string array.
   int count = 0;
   while (s[count] != 0) // not includes the "null terminator".
   {
@@ -62,6 +62,9 @@ char characterAt(arrayString s, int position)
   // NOTICE: Recall from Chapter 3 that if a pointer is assigned the address of an array,
   // we can access elements in the array using normal array notation
   return s[position];
+
+  // WARNING: this code places the responsibility of validating 
+  // the second parameter on the caller.
 }
 
 
@@ -89,7 +92,7 @@ void append(arrayString &s, char c)
   }
 
   newS[oldLength]     = c; // "appended character"
-  newS[oldLength + 1] = 0; // "null terminator"
+  newS[oldLength + 1] = 0; // "null terminator" at the end.
 
 
   // To avoid a memory leak, we have to deallocate the array in the heap
@@ -123,13 +126,75 @@ void appendTester()
 }
 
 
+
+
+void concatenate(arrayString &s1, arrayString s2)
+{
+  int s1_OldLength = length(s1);
+  int s2_Length    = length(s2);
+  int s1_NewLength = s1_OldLength + s2_Length;
+
+
+  arrayString newS = new char[s1_NewLength + 1]; // additional space for the "null terminator".
+
+  // copy the characters from the two original strings to the new string.
+  for (int i = 0; i < s1_OldLength; i++)
+  {
+    newS[i] = s1[i];
+  }
+  for (int i = 0; i < s2_Length; i++)
+  {
+    newS[s1_OldLength + i] = s2[i];
+  }
+
+
+  newS[s1_NewLength] = 0; // "null terminator" at the end.
+
+
+  // To avoid a memory leak, we have to deallocate the array in the heap
+  // that our parameter s1 originally pointed to.
+  delete[] s1;
+
+  s1 = newS; // repoint the first parameter at the newly allocated string.
+}
+
+
+
+
+void concatenateTester()
+{
+  arrayString a = new char[5];
+  a[0] = 't'; a[1] = 'e'; a[2] = 's'; a[3] = 't'; a[4] = 0;
+
+  arrayString b = new char[4];
+  b[0] = 'b'; b[1] = 'e'; b[2] = 'd'; b[3] = 0;
+
+  concatenate(a, b);
+  cout << a << endl;
+
+
+  // ---
+  arrayString c = new char[5];
+  c[0] = 't'; c[1] = 'e'; c[2] = 's'; c[3] = 't'; c[4] = 0;
+
+  arrayString d = new char[1];
+  d[0] = 0;
+
+  concatenate(d, c);
+  cout << c << endl << d << endl;
+
+  // forces the output stream to display the raw value of the pointers.
+  cout << (void *) c << endl << (void *) d << endl; 
+}
+
+
+
 int main()
 {
   cout << "Variable-Length String Manipulation." << endl;
 
-
   appendTester();
-
+  concatenateTester();
 
 
   cout << endl;
