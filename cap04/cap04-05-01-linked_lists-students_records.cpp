@@ -1,4 +1,4 @@
-//2014.03.21 Gustaf - CTG.
+//2014.03.21 - 2014.03.23 Gustaf - CTG.
 
 
 /* P R O B L E M : T R A C K I N G  A N  U N K N O W N  Q U A N T I T Y  O F  S T U D E N T  R E C O R D S
@@ -50,8 +50,49 @@ struct listNode
 
 
 typedef listNode *studentCollection;
-  // For readability we are using the studentCollection type 
-  // only for variables that will refer to the whole list structure.
+// For readability we are using the studentCollection type
+// only for variables that will refer to the whole list structure.
+
+
+
+void addRecord(studentCollection &sc, int stuNum, int gr)
+{
+  // After the new node is created, it is linked into the list at the beginning.
+
+  // New node
+  listNode *newNode = new listNode;
+  newNode->studentNum = stuNum;
+  newNode->grade = gr;
+
+
+  newNode->next = sc; // linked at the beginning of the list
+  sc = newNode; // new head pointer
+}
+
+
+double averageRecord(studentCollection sc)
+{
+  // Special case: empty list.
+  if (sc == NULL)
+    return 0;
+
+
+  // ---
+  int count = 0;
+  double sum = 0;
+
+  listNode *loopPtr = sc;
+  while (loopPtr != NULL)
+  {
+    sum += loopPtr->grade;
+    count++;
+    loopPtr = loopPtr->next;
+  }
+
+  double average = sum / count;
+  return average;
+}
+
 
 
 
@@ -63,7 +104,7 @@ int main()
 
 
   // ---
-  studentCollection sc;
+  studentCollection sc; // First node or head pointer.
 
   // Creating the nodes
   listNode *node1 = new listNode;
@@ -80,13 +121,19 @@ int main()
   node1->next = node2;
   node2->next = node3;
   node3->next = NULL;
- 
+
   node1 = node2 = node3 = NULL; // NOTICE: to clean things up and avoid potential cross-linking problems.
 
 
 
+  // ---
+  addRecord(sc, 1274, 91);
+
 
   // ---
+  int avg = averageRecord(sc);
+  cout << "Promedio: " << avg << endl;
+
 
 
   cout << endl;
