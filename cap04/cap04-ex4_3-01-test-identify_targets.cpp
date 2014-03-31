@@ -1,4 +1,4 @@
-//2014.03.28 Gustaf - CTG.
+//2014.03.28 - 2014.03.30 Gustaf - CTG.
 
 
 /* EXERCISE 4-3 :
@@ -21,7 +21,9 @@ OK - Diagram of the example.
 - Traverse (go over) the SOURCE string and identify the initial and final positions in the TARGET string.
   ok- Identify one character.
   ok- Identify two characters.
-  - Identify lot of characters.
+  ok- Identify three characters.
+  - Identify four characters.
+  - Identify lots of characters.
 
 */
 
@@ -38,7 +40,7 @@ typedef char *arrayString;
 
 int main()
 {
-  cout << "Variable-Length String Manipulation. REPLACE" << endl;
+  cout << "Variable-Length String Manipulation. TEST identify the limits." << endl;
 
 
 
@@ -69,7 +71,7 @@ int main()
 
 
 
-  // --- Identifying two characters.
+  // --- Identifying two continuous characters.
   char targetArray[2] = {'a', 'b'};
   // char targetArray[2] = {'b', 'z'};
 
@@ -84,10 +86,10 @@ int main()
     }
 
     // Find next char, in next cicle.
-    if ( (posIni != -1) && (i == (posIni +1) ) && (a[i] == targetArray[1]) )
+    if ( (posIni != -1) && (i == (posIni + 1) ) && (a[i] == targetArray[1]) )
     {
       posFinal = i;
-  
+
       cout << "Target - index: " << targetArray[0] << " - " << posIni << endl;
       cout << "Target - index: " << targetArray[1] << " - " << posFinal << endl;
 
@@ -95,6 +97,63 @@ int main()
     }
 
   }
+  cout << endl;
+  cout << endl;
+
+
+
+
+  // --- Identifying three continuous characters.
+  char targetArrayThree[3] = {'a', 'b', 'c'};
+  // char targetArrayThree[3] = {'b', 'e', 'e'};
+
+  posIni = -1, posFinal = -1;
+  for (int i = 0; i < ARRAY_SIZE; ++i)
+  {
+
+    // Find first char
+    if ( (posIni == -1) && (a[i] == targetArrayThree[0]) )
+    {
+      posIni = i;
+    }
+
+
+    // Check second char, in next cicle.
+    if ( (posIni != -1) && (i == (posIni + 1)) )
+    {
+
+      if (a[i] == targetArrayThree[1])
+      {
+        posFinal = i;
+      }
+
+
+      if (a[i] != targetArrayThree[1])
+      {
+        posIni = -1, posFinal = -1; // Reset.
+      }
+
+    }
+
+
+    // Check third char, in next cicle.
+    if ( (posIni != -1) && (posFinal != -1) && (i == (posFinal + 1)) )
+    {
+
+      if (a[i] == targetArrayThree[2])
+      {
+        posFinal = i;
+
+        cout << "Target initial - index: " << targetArrayThree[0] << " - " << posIni << endl;
+        cout << "Target final   - index: " << targetArrayThree[2] << " - " << posFinal << endl;
+
+      }
+
+      posIni = -1, posFinal = -1; // Reset.
+    }
+
+  }
+
 
 
 
