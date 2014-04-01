@@ -18,3 +18,5 @@
 # Generic executable
 hello
 
+# LibreOffice locks
+*.~lock.*
