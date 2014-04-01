@@ -1,4 +1,4 @@
-//2014.03.28 - 2014.03.30 - 2014.03.31 Gustaf - CTG.
+//2014.03.28 - 2014.03.30 - 2014.03.31 - 2014.04.01 Gustaf - CTG.
 
 
 /* EXERCISE 4-3 :
@@ -18,12 +18,12 @@ For example,
 === PLAN ===
 
 OK - Diagram of the example.
-- Traverse (go over) the SOURCE string and identify the initial and final positions of the TARGET string.
+OK - Traverse (go over) the SOURCE string and identify the initial and final positions of the TARGET string.
   ok- Identify one character.
   ok- Identify two characters.
   ok- Identify three characters.
   ok- Identify four characters.
-  - Identify lots of characters.
+  ok- Identify FROM one TO lots of characters.
 
 */
 
@@ -75,7 +75,7 @@ int main()
 
 
   // --- Identifying two contiguous characters.
-  cout << "Identifying two contiguous character." << endl;
+  cout << "Identifying two contiguous characters." << endl;
 
   char targetArray[2] = {'a', 'b'};
   // char targetArray[2] = {'b', 'z'};
@@ -106,7 +106,7 @@ int main()
 
 
   // --- Identifying three contiguous characters.
-  cout << "Identifying three contiguous character." << endl;
+  cout << "Identifying three contiguous characters." << endl;
 
   char targetArrayThree[3] = {'a', 'b', 'c'};
   // char targetArrayThree[3] = {'b', 'e', 'e'};
@@ -154,7 +154,7 @@ int main()
 
 
   // --- Identifying four contiguous characters.
-  cout << "Identifying four contiguous character." << endl;
+  cout << "Identifying four contiguous characters." << endl;
 
 
   char targetArrayFour[4] = {'a', 'b', 'c', 'd'};
@@ -220,7 +220,102 @@ int main()
   }
 
 
-  delete a; // Free memory of the dinamic array.
+  // --- Identifying lots of contiguous characters.
+  
+  // const int TARGET_SIZE = 9; char targetArrayLots[TARGET_SIZE] = {'b', 'c', 'd', 'a', 'b', 'c', 'e', 'f', 'g'};
+  // const int TARGET_SIZE = 7; char targetArrayLots[TARGET_SIZE] = {'b', 'c', 'd', 'a', 'b', 'c', 'e'};
+  const int TARGET_SIZE = 3; char targetArrayLots[TARGET_SIZE] = {'a', 'b', 'c'};
+  // const int TARGET_SIZE = 2; char targetArrayLots[TARGET_SIZE] = {'a', 'b'};
+  // const int TARGET_SIZE = 1; char targetArrayLots[TARGET_SIZE] = {'b'};
+
+
+  cout << "Identifying " << TARGET_SIZE << " contiguous characters." << endl;
+
+
+  a[0] = 'a'; a[1] = 'b'; a[2] = 'c'; a[3] = 'd';
+  a[4] = 'a'; a[5] = 'b'; a[6] = 'c'; a[7] = 'e'; a[8] = 0;
+  cout << "Initial string: " << a << endl << endl;
+
+
+
+  posIni = -1, posFinal = -1;
+  for (int i = 0; i < ARRAY_SIZE; ++i)
+  {
+
+    // Find first character.
+    if ( (posIni == -1) && (posFinal == -1) && (a[i] == targetArrayLots[0]) )
+    {
+      posIni = i;
+
+
+      // Handles special case of one character.
+      if (TARGET_SIZE == 1)
+      {
+        cout << "Target initial/final - index: " << targetArrayLots[0] << " - " << posIni << endl;
+        cout << endl;
+
+        posIni = -1, posFinal = -1; // Reset.
+      }
+
+
+      // Handles cases from two characters until ...
+      for (int j = 1; j < TARGET_SIZE; ++j)
+      {
+
+        // Check second adjacent character.
+        if ( (posFinal == -1) && ( (i + j) == (posIni + j)) )
+        {
+          if (a[i + j] == targetArrayLots[j])
+          {
+            posFinal = i + j;
+          }
+
+          if (a[i + j] != targetArrayLots[j])
+          {
+            posIni = -1, posFinal = -1; // Reset.
+          }
+        }
+
+
+        // Check next adjacent character. BUT not the last.
+        if ( (posFinal != -1) && ((i + j) == (posIni + j)) && (j <= (TARGET_SIZE - 2)) )
+        {
+          if (a[i + j] == targetArrayLots[j])
+          {
+            posFinal = i + j;
+          }
+
+          if (a[i + j] != targetArrayLots[j])
+          {
+            posIni = -1, posFinal = -1; // Reset.
+          }
+        }
+
+
+        // Check last adjacent character.
+        if ( (posFinal != -1) && ((i + j) == (posIni + j)) && (j == (TARGET_SIZE - 1)) )
+        {
+          if (a[i + j] == targetArrayLots[j])
+          {
+            posFinal = i + j;
+
+            cout << "Target initial - index: " << targetArrayLots[0] << " - " << posIni << endl;
+            cout << "Target final   - index: " << targetArrayLots[j] << " - " << posFinal << endl;
+            cout << endl;
+          }
+
+          posIni = -1, posFinal = -1; // Reset.
+        }
+
+      } // internal for
+    } // if that check the first character.
+
+  } // external for
+
+
+
+
+  delete a; // Free memory of the dynamic array.
 
 
   cout << endl;
