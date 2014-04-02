@@ -1,4 +1,4 @@
-//2014.04.01 Gustaf - CTG.
+//2014.04.01 - 2014.04.02 Gustaf - CTG.
 
 
 /* OBJECTIVE :
@@ -9,7 +9,10 @@
 
 - Function to identify the start and end positions of the target inside the source string.
  ok- Convert to a function and Test functionality.
+
  - Return a dynamic array.
+ For each target string, just the initial position is needed.
+ The final can be calculated easily with the length of the target string.
 
 */
 
@@ -22,7 +25,18 @@ using namespace std;
 
 
 typedef char *arrayString;
-typedef int *arrayInt;
+typedef int  *arrayInt;
+
+
+struct posIniNode
+{
+  int posInitial;
+
+  posIniNode *next; // Pointer to the same struct.
+};
+
+typedef posIniNode *posList;
+
 
 
 int lengthFunction(arrayString s)
@@ -45,7 +59,7 @@ void identifyLimits (arrayString sourceStr, arrayString targetStr, arrayInt &arr
 
 
   const int RESULT_SIZE = 2;
-  arrayInt newArrayLimits = new int[RESULT_SIZE];
+  arrayInt newArrayLimits = new int[RESULT_SIZE]; // At the end it is going to point to: arrayLimitsResult.
 
 
   int SOURCE_SIZE = lengthFunction(sourceStr);
@@ -187,8 +201,49 @@ void identifyLimitsTester ()
   /// ---
 
 
-  const int RESULT_SIZE = 2;
+
+
+
+//--------------------------
+
+  const int RESULT_SIZE = 1;
   arrayInt resultLimits = new int[RESULT_SIZE];
+
+
+/*=================
+
+
+struct posIniNode
+{
+  int posInitial;
+
+  posIniNode *next; // Pointer to the same struct.
+};
+
+typedef posIniNode *posList;
+==========================
+
+*/
+
+
+  // -- Linked list
+
+  // Head pointer
+  posList resultLimits; 
+
+  // Nodes
+  posIniNode *node1 = new posIniNode;
+  node1 -> posInitial = -1;
+
+  //Linked list of just one node.
+  resultLimits = node1;
+  node1 -> next = NULL;
+
+  // Cleaning things up to avoid cross-linking.
+  node1 = NULL;
+
+
+//-------------------------------------------------
 
 
   cout << "Initial string : " << a << endl;
