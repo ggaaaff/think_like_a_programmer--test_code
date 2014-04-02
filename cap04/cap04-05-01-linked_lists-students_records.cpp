@@ -122,8 +122,8 @@ int main()
   node2->next = node3;
   node3->next = NULL;
 
-  node1 = node2 = node3 = NULL; // NOTICE: to clean things up and avoid potential cross-linking problems.
-
+  // NOTICE: to clean things up and avoid potential cross-linking problems.
+  node1 = node2 = node3 = NULL; 
 
 
   // ---
@@ -134,6 +134,10 @@ int main()
   int avg = averageRecord(sc);
   cout << "Promedio: " << avg << endl;
 
+
+  // ---
+  //QUESTION 2014.04.02 I am not so sure this is the way to free all the nodes, IS IT?
+  delete[] sc;
 
 
   cout << endl;
