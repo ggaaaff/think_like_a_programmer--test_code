@@ -315,7 +315,7 @@ int main()
 
 
 
-  delete a; // Free memory of the dynamic array.
+  delete[] a; // Free memory of the dynamic array.
 
 
   cout << endl;
