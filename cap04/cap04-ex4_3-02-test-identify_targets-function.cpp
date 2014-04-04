@@ -1,4 +1,4 @@
-//2014.04.01 - 2014.04.02 Gustaf - CTG.
+//2014.04.01 - 2014.04.02 - 2014.04.03 Gustaf - CTG.
 
 
 /* OBJECTIVE :
@@ -10,7 +10,7 @@
 - Function to identify the start and end positions of the target inside the source string.
  ok- Convert to a function and Test functionality.
 
- - Return a dynamic array.
+ - Return a list with the positions.
  For each target string, just the initial position is needed.
  The final can be calculated easily with the length of the target string.
 
@@ -35,7 +35,7 @@ struct posIniNode
   posIniNode *next; // Pointer to the same struct.
 };
 
-typedef posIniNode *posList;
+typedef posIniNode *posList; // type reserved for the head pointer.
 
 
 
@@ -52,23 +52,44 @@ int lengthFunction(arrayString s)
 
 
 
-void identifyLimits (arrayString sourceStr, arrayString targetStr, arrayInt &arrayLimitsResult)
+// void identifyLimits (arrayString sourceStr, arrayString targetStr, arrayInt &arrayLimitsResult)
+void identifyLimits (arrayString sourceStr, arrayString targetStr, posList &positionsResult)
 {
 
   int posIni = -1, posFinal = -1;
 
+  /*
+    const int RESULT_SIZE = 2;
+    arrayInt newArrayLimits = new int[RESULT_SIZE]; // At the end it is going to point to: arrayLimitsResult.
 
-  const int RESULT_SIZE = 2;
-  arrayInt newArrayLimits = new int[RESULT_SIZE]; // At the end it is going to point to: arrayLimitsResult.
-
+  */
 
   int SOURCE_SIZE = lengthFunction(sourceStr);
   int TARGET_SIZE = lengthFunction(targetStr);
 
 
-  // -----------------------------------
-  // -----------------------------------
+  // --- Linked list
 
+  // Head pointer
+  posList newPositionsResult;
+
+  // Nodes
+  posIniNode *node1 = new posIniNode;
+  node1 -> posInitial = -1;
+
+  //Linking the list, just one node.
+  newPositionsResult = node1;
+  node1 -> next = NULL;
+
+  // Cleaning things up to avoid cross-linking.
+  node1 = NULL;
+
+  // ---
+
+
+
+  // -----------------------------------
+  // -----------------------------------
 
   posIni = -1, posFinal = -1;
   for (int i = 0; i < SOURCE_SIZE; ++i)
@@ -78,6 +99,7 @@ void identifyLimits (arrayString sourceStr, arrayString targetStr, arrayInt &arr
     if ( (posIni == -1) && (posFinal == -1) && (sourceStr[i] == targetStr[0]) )
     {
       posIni = i;
+      newPositionsResult -> posInitial = posIni; //New node????
 
 
       // Handles special case of one character.
@@ -145,22 +167,22 @@ void identifyLimits (arrayString sourceStr, arrayString targetStr, arrayInt &arr
   } // external for
 
 
-
-
   // -----------------------------------
   // -----------------------------------
 
 
 
 
+  // -- To avoid a memory leak.
 
+  /*
+    delete[] arrayLimitsResult;
+    arrayLimitsResult = newArrayLimits;
+  */
 
-  // ---
-  // To avoid a memory leak, we have to deallocate the array in the heap
-  // that our parameter originally pointed to.
-  delete[] arrayLimitsResult;
+  delete[] positionsResult;
+  positionsResult = newPositionsResult;
 
-  arrayLimitsResult = newArrayLimits;
 }
 
 
@@ -204,38 +226,38 @@ void identifyLimitsTester ()
 
 
 
-//--------------------------
+  //--------------------------
 
-  const int RESULT_SIZE = 1;
-  arrayInt resultLimits = new int[RESULT_SIZE];
-
-
-/*=================
+  // const int RESULT_SIZE = 1;
+  // arrayInt resultLimits = new int[RESULT_SIZE];
 
 
-struct posIniNode
-{
-  int posInitial;
+  /*=================
 
-  posIniNode *next; // Pointer to the same struct.
-};
 
-typedef posIniNode *posList;
-==========================
+  struct posIniNode
+  {
+    int posInitial;
 
-*/
+    posIniNode *next; // Pointer to the same struct.
+  };
+
+  typedef posIniNode *posList;
+  ==========================
+
+  */
 
 
   // -- Linked list
 
   // Head pointer
-  posList resultLimits; 
+  posList resultLimits;
 
   // Nodes
   posIniNode *node1 = new posIniNode;
   node1 -> posInitial = -1;
 
-  //Linked list of just one node.
+  //Linking the list, just one node.
   resultLimits = node1;
   node1 -> next = NULL;
 
@@ -243,7 +265,7 @@ typedef posIniNode *posList;
   node1 = NULL;
 
 
-//-------------------------------------------------
+  //-------------------------------------------------
 
 
   cout << "Initial string : " << a << endl;
@@ -251,6 +273,9 @@ typedef posIniNode *posList;
   cout << endl;
   identifyLimits(a, t, resultLimits);
 
+
+  cout << "Positions: " << resultLimits -> posInitial << endl;
+  cout << endl;
 
 
   // Free dynamic memory.
