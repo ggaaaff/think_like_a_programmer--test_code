@@ -1,4 +1,4 @@
-//2014.04.01 - 2014.04.02 - 2014.04.03 Gustaf - CTG.
+//2014.04.01 - 2014.04.02 - 2014.04.03 - 2014.04.05 Gustaf - CTG.
 
 
 /* OBJECTIVE :
@@ -38,6 +38,19 @@ struct posIniNode
 typedef posIniNode *posList; // type reserved for the head pointer.
 
 
+void addPosition(posList &posResult, int posIni)
+{
+  // After the new node is created, it is linked into the list at the beginning.
+
+  // New node
+  posIniNode *newNode = new posIniNode;
+  newNode -> posInitial = posIni;
+
+  newNode -> next = posResult; // linked at the beginning of the list.
+  posResult = newNode; // new head pointer.
+}
+
+
 
 int lengthFunction(arrayString s)
 {
@@ -73,17 +86,17 @@ void identifyLimits (arrayString sourceStr, arrayString targetStr, posList &posi
   // Head pointer
   posList newPositionsResult;
 
-  // Nodes
-  posIniNode *node1 = new posIniNode;
-  node1 -> posInitial = -1;
+  /*  // Nodes
+    posIniNode *node1 = new posIniNode;
+    node1 -> posInitial = -1;
 
-  //Linking the list, just one node.
-  newPositionsResult = node1;
-  node1 -> next = NULL;
+    //Linking the list, just one node.
+    newPositionsResult = node1;
+    node1 -> next = NULL;
 
-  // Cleaning things up to avoid cross-linking.
-  node1 = NULL;
-
+    // Cleaning things up to avoid cross-linking.
+    node1 = NULL;
+  */
   // ---
 
 
@@ -99,12 +112,14 @@ void identifyLimits (arrayString sourceStr, arrayString targetStr, posList &posi
     if ( (posIni == -1) && (posFinal == -1) && (sourceStr[i] == targetStr[0]) )
     {
       posIni = i;
-      newPositionsResult -> posInitial = posIni; //New node????
 
 
       // Handles special case of one character.
       if (TARGET_SIZE == 1)
       {
+        addPosition(newPositionsResult, posIni); // A new node for every new initial position.
+
+
         cout << "Target initial/final - index: " << targetStr[0] << " - " << posIni << endl;
         cout << endl;
 
@@ -153,6 +168,9 @@ void identifyLimits (arrayString sourceStr, arrayString targetStr, posList &posi
           {
             posFinal = i + j;
 
+            addPosition(newPositionsResult, posIni); // A new node for every new initial position.
+
+
             cout << "Target initial - index: " << targetStr[0] << " - " << posIni << endl;
             cout << "Target final   - index: " << targetStr[j] << " - " << posFinal << endl;
             cout << endl;
@@ -161,10 +179,10 @@ void identifyLimits (arrayString sourceStr, arrayString targetStr, posList &posi
           posIni = -1, posFinal = -1; // Reset.
         }
 
-      } // internal for
-    } // if that check the first character.
+      } // for - inner
+    } // if - check the first character.
 
-  } // external for
+  } // for - outer
 
 
   // -----------------------------------
@@ -209,16 +227,16 @@ void identifyLimitsTester ()
   // t[0] = 'a'; t[1] = 'b'; t[2] = 'c'; t[3] = 'd';
   // t[4] = 'a'; t[5] = 'b'; t[6] = 'c'; t[7] = 'e'; t[8] = 0;
 
-  // const int TARGET_SIZE = 4;
-  // arrayString t = new char[TARGET_SIZE];
-  // t[0] = 'a'; t[1] = 'b'; t[2] = 'c'; t[3] = 0;
+  const int TARGET_SIZE = 4;
+  arrayString t = new char[TARGET_SIZE];
+  t[0] = 'a'; t[1] = 'b'; t[2] = 'c'; t[3] = 0;
 
   // const int TARGET_SIZE = 3;
   // arrayString t = new char[TARGET_SIZE];
-  // t[0] = 'a'; t[1] = 'b'; t[2] = 0;
+  // t[0] = 'b'; t[1] = 'c'; t[2] = 0;
 
-  const int TARGET_SIZE = 2; arrayString t = new char[TARGET_SIZE];
-  t[0] = 'a'; t[1] = 0;
+  // const int TARGET_SIZE = 2; arrayString t = new char[TARGET_SIZE];
+  // t[0] = 'a'; t[1] = 0;
 
   /// ---
 
@@ -232,9 +250,29 @@ void identifyLimitsTester ()
   // arrayInt resultLimits = new int[RESULT_SIZE];
 
 
-  /*=================
 
+  // -- Linked list
 
+  // Head pointer
+  posList resultLimits;
+
+  /*
+    // Nodes
+    posIniNode *node1 = new posIniNode;
+    node1 -> posInitial = 99;
+
+    //Linking the list, just one node.
+    resultLimits = node1;
+    node1 -> next = NULL;
+
+    // Cleaning things up to avoid cross-linking.
+    node1 = NULL;
+
+  */
+  //-------------------------------------------------
+
+  /*
+  =================
   struct posIniNode
   {
     int posInitial;
@@ -248,33 +286,19 @@ void identifyLimitsTester ()
   */
 
 
-  // -- Linked list
-
-  // Head pointer
-  posList resultLimits;
-
-  // Nodes
-  posIniNode *node1 = new posIniNode;
-  node1 -> posInitial = -1;
-
-  //Linking the list, just one node.
-  resultLimits = node1;
-  node1 -> next = NULL;
-
-  // Cleaning things up to avoid cross-linking.
-  node1 = NULL;
-
-
-  //-------------------------------------------------
-
-
   cout << "Initial string : " << a << endl;
   cout << "Target string  : " << t << endl;
   cout << endl;
   identifyLimits(a, t, resultLimits);
 
 
-  cout << "Positions: " << resultLimits -> posInitial << endl;
+  cout << "Initial Positions (reverse order): ";
+  posIniNode *loopPtr = resultLimits;
+  while (loopPtr != NULL)
+  {
+    cout << loopPtr->posInitial << " - ";
+    loopPtr = loopPtr->next;
+  }
   cout << endl;
 
 
