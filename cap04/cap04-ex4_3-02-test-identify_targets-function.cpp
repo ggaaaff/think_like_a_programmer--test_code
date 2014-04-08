@@ -1,4 +1,5 @@
-//2014.04.01 - 2014.04.02 - 2014.04.03 - 2014.04.05 - 2014.04.07 Gustaf - CTG.
+//2014.04.01 - 2014.04.02 - 2014.04.03 - 2014.04.05
+// - 2014.04.07 Gustaf - CTG.
 
 
 /* OBJECTIVE :
@@ -48,7 +49,7 @@ void pushPosition(posList &posResult, int posIni)
   newNode -> posInitial = posIni;
 
   // linked at the BEGINNING of the list.
-  newNode -> next = posResult; 
+  newNode -> next = posResult;
   posResult = newNode; // new head pointer.
 }
 
@@ -62,15 +63,39 @@ void appendPosition(posList &posResult, int posIni)
   newNode -> posInitial = posIni;
   newNode -> next = NULL;
 
-  // linked at the end of the list.
+  // Go to the last node
+  int count = 0;
+  posIniNode *loopNode = NULL;
+
   posIniNode *loopPtr = posResult;
   while (loopPtr != NULL)
-  {    
-    loopPtr = loopPtr->next;
+  {
+    cout << "debug: LOOP while" << endl;
+
+    count++;
+    loopNode = loopPtr;
+    loopPtr  = loopPtr->next;
   }
 
-cout << "debug" << endl;
-  loopPtr -> next = newNode; // new node linked at the end of the list.
+  cout << "debug" << endl;
+
+  // new node linked at the end of the list
+  if (count == 0)
+  {
+    cout << "debug: NULL" << endl;
+    posResult = newNode;
+  }
+  else
+  {
+    cout << "debug: NO NULL" << endl;
+    loopNode -> next = newNode;
+  }
+
+  // Cleaning
+  // DOUBT 2014.04.08 Is it enough?
+  newNode  = NULL;
+  loopNode = NULL;
+  loopPtr  = NULL;
 }
 
 
@@ -107,7 +132,7 @@ void identifyLimits (arrayString sourceStr, arrayString targetStr, posList &posi
   // --- Linked list
 
   // Head pointer
-  posList newPositionsResult;
+  posList newPositionsResult = NULL;
 
   /*  // Nodes
     posIniNode *node1 = new posIniNode;
@@ -237,7 +262,7 @@ void identifyLimitsTester ()
   arrayString a = new char[ARRAY_SIZE];
 
   a[0] = 'a'; a[1] = 'b'; a[2] = 'c'; a[3] = 'd';
-  a[4] = 'a'; a[5] = 'b'; a[6] = 'c'; a[7] = 'e'; a[8] = 0;
+  a[4] = 'a'; a[5] = 'b'; a[6] = 'c'; a[7] = 'a'; a[8] = 0;
 
 
   // -- Different tests for the TARGET STRING
@@ -252,16 +277,16 @@ void identifyLimitsTester ()
   // t[0] = 'a'; t[1] = 'b'; t[2] = 'c'; t[3] = 'd';
   // t[4] = 'a'; t[5] = 'b'; t[6] = 'c'; t[7] = 'e'; t[8] = 0;
 
-  // const int TARGET_SIZE = 4;
-  // arrayString t = new char[TARGET_SIZE];
-  // t[0] = 'a'; t[1] = 'b'; t[2] = 'c'; t[3] = 0;
+  const int TARGET_SIZE = 4;
+  arrayString t = new char[TARGET_SIZE];
+  t[0] = 'a'; t[1] = 'b'; t[2] = 'c'; t[3] = 0;
 
   // const int TARGET_SIZE = 3;
   // arrayString t = new char[TARGET_SIZE];
   // t[0] = 'b'; t[1] = 'c'; t[2] = 0;
 
-  const int TARGET_SIZE = 2; arrayString t = new char[TARGET_SIZE];
-  t[0] = 'a'; t[1] = 0;
+  // const int TARGET_SIZE = 2; arrayString t = new char[TARGET_SIZE];
+  // t[0] = 'a'; t[1] = 0;
 
   /// ---
 
@@ -279,7 +304,7 @@ void identifyLimitsTester ()
   // -- Linked list
 
   // Head pointer
-  posList resultLimits;
+  posList resultLimits = NULL;
 
   /*
     // Nodes
@@ -317,7 +342,7 @@ void identifyLimitsTester ()
   identifyLimits(a, t, resultLimits);
 
 
-  cout << "Initial Positions (reverse order): ";
+  cout << "Initial Positions: ";
   posIniNode *loopPtr = resultLimits;
   while (loopPtr != NULL)
   {
