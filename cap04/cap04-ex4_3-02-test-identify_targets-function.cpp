@@ -1,4 +1,4 @@
-//2014.04.01 - 2014.04.02 - 2014.04.03 - 2014.04.05 Gustaf - CTG.
+//2014.04.01 - 2014.04.02 - 2014.04.03 - 2014.04.05 - 2014.04.07 Gustaf - CTG.
 
 
 /* OBJECTIVE :
@@ -8,11 +8,12 @@
 === PLAN ===
 
 - Function to identify the start and end positions of the target inside the source string.
- ok- Convert to a function and Test functionality.
 
- - Return a list with the positions.
- For each target string, just the initial position is needed.
- The final can be calculated easily with the length of the target string.
+   ok- Convert to a function and Test functionality.
+
+   - Return a list with the positions.
+   For each target string found in the source string, just the initial position is needed.
+   The final can be calculated easily with the length of the target string.
 
 */
 
@@ -38,16 +39,38 @@ struct posIniNode
 typedef posIniNode *posList; // type reserved for the head pointer.
 
 
-void addPosition(posList &posResult, int posIni)
+void pushPosition(posList &posResult, int posIni)
 {
-  // After the new node is created, it is linked into the list at the beginning.
+  // After the new node is created, it is linked into the list at the BEGINNING.
 
   // New node
   posIniNode *newNode = new posIniNode;
   newNode -> posInitial = posIni;
 
-  newNode -> next = posResult; // linked at the beginning of the list.
+  // linked at the BEGINNING of the list.
+  newNode -> next = posResult; 
   posResult = newNode; // new head pointer.
+}
+
+
+void appendPosition(posList &posResult, int posIni)
+{
+  // After the new node is created, it is linked into the list at the END
+
+  // New node
+  posIniNode *newNode = new posIniNode;
+  newNode -> posInitial = posIni;
+  newNode -> next = NULL;
+
+  // linked at the end of the list.
+  posIniNode *loopPtr = posResult;
+  while (loopPtr != NULL)
+  {    
+    loopPtr = loopPtr->next;
+  }
+
+cout << "debug" << endl;
+  loopPtr -> next = newNode; // new node linked at the end of the list.
 }
 
 
@@ -117,7 +140,8 @@ void identifyLimits (arrayString sourceStr, arrayString targetStr, posList &posi
       // Handles special case of one character.
       if (TARGET_SIZE == 1)
       {
-        addPosition(newPositionsResult, posIni); // A new node for every new initial position.
+        // pushPosition(newPositionsResult, posIni); // A new node for every new initial position.
+        appendPosition(newPositionsResult, posIni); // A new node for every new initial position.
 
 
         cout << "Target initial/final - index: " << targetStr[0] << " - " << posIni << endl;
@@ -168,7 +192,8 @@ void identifyLimits (arrayString sourceStr, arrayString targetStr, posList &posi
           {
             posFinal = i + j;
 
-            addPosition(newPositionsResult, posIni); // A new node for every new initial position.
+            // pushPosition(newPositionsResult, posIni); // A new node for every new initial position.
+            appendPosition(newPositionsResult, posIni); // A new node for every new initial position.
 
 
             cout << "Target initial - index: " << targetStr[0] << " - " << posIni << endl;
@@ -227,16 +252,16 @@ void identifyLimitsTester ()
   // t[0] = 'a'; t[1] = 'b'; t[2] = 'c'; t[3] = 'd';
   // t[4] = 'a'; t[5] = 'b'; t[6] = 'c'; t[7] = 'e'; t[8] = 0;
 
-  const int TARGET_SIZE = 4;
-  arrayString t = new char[TARGET_SIZE];
-  t[0] = 'a'; t[1] = 'b'; t[2] = 'c'; t[3] = 0;
+  // const int TARGET_SIZE = 4;
+  // arrayString t = new char[TARGET_SIZE];
+  // t[0] = 'a'; t[1] = 'b'; t[2] = 'c'; t[3] = 0;
 
   // const int TARGET_SIZE = 3;
   // arrayString t = new char[TARGET_SIZE];
   // t[0] = 'b'; t[1] = 'c'; t[2] = 0;
 
-  // const int TARGET_SIZE = 2; arrayString t = new char[TARGET_SIZE];
-  // t[0] = 'a'; t[1] = 0;
+  const int TARGET_SIZE = 2; arrayString t = new char[TARGET_SIZE];
+  t[0] = 'a'; t[1] = 0;
 
   /// ---
 
