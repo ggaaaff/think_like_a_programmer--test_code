@@ -1,4 +1,4 @@
-//2014.03.10 Gustaf - CTG.
+//2014.03.10 - 2014.03.11 Gustaf - CTG.
 
 
 /* OBJECTIVE :
@@ -18,8 +18,9 @@ For example,
 
 === PLAN ===
 
--
--
+- Function to replace the string.
+  ok- Test with one letter.
+  - Test with lot of letters.
 
 */
 
@@ -45,9 +46,21 @@ typedef posIniNode *posList; // type reserved for the head pointer.
 
 
 
+int lengthFunction(arrayString s)
+{
+  // Determine the length of a string array.
+  int count = 0;
+  while (s[count] != 0) // not includes the "null terminator".
+  {
+    count++;
+  }
+  return count;
+}
+
+
 void identifyLimits (arrayString sourceStr, arrayString targetStr, posList &positionsResult)
 {
-  // -- Simulate result, for simplicity in this test archive.
+  // -- SIMULATE result, for simplicity in this test archive.
   //
   // This function works and its code is in the file:
   // cap04-ex4_3-02-test-identify_targets-function.cpp
@@ -69,7 +82,7 @@ void identifyLimits (arrayString sourceStr, arrayString targetStr, posList &posi
 
   // Cleaning
   newNode1 = NULL;
-  newNode2 = NULL;  
+  newNode2 = NULL;
 
   // ---
 
@@ -80,23 +93,39 @@ void identifyLimits (arrayString sourceStr, arrayString targetStr, posList &posi
 void replaceFunction(arrayString &source, arrayString target, arrayString replace)
 {
 
-  // Get the initial positions of the Target in the Source
+  // -- Get the initial positions of the Target in the Source
   posList resultLimits = NULL; // Head pointer of linked list.
   identifyLimits(source, target, resultLimits);
 
+  // // Output
+  // cout << "Index of Initial Positions: ";
+  // posIniNode *loopPtr = resultLimits;
+  // while (loopPtr != NULL)
+  // {
+  //   cout << loopPtr -> posInitial << " - ";
+  //   loopPtr = loopPtr -> next;
+  // }
+  // cout << endl;
 
-  cout << "Index of Initial Positions: ";
+
+
+  // --
+  int sLength = lengthFunction(source);
+  int tLength = lengthFunction(target);
+  int rLength = lengthFunction(replace);
+
+  // arrayString newS = new char[sLength + tLength + 1];
+
   posIniNode *loopPtr = resultLimits;
   while (loopPtr != NULL)
   {
-    cout << loopPtr->posInitial << " - ";
-    loopPtr = loopPtr->next;
+    cout << "DEBUG: (Initial position) " << loopPtr -> posInitial << endl;
+
+    source[ loopPtr -> posInitial ] = replace[0];
+    loopPtr = loopPtr -> next;
   }
   cout << endl;
 
-
-
-  //
 
 
 }
@@ -141,8 +170,11 @@ void replaceFunctionTester ()
 
 
   // -- REPLACE STRING
-  const int REPLACE_SIZE = 3; arrayString r = new char[REPLACE_SIZE];
-  r[0] = 'a'; r[1] = 'b'; r[2] = 0;
+  // const int REPLACE_SIZE = 3; arrayString r = new char[REPLACE_SIZE];
+  // r[0] = 'a'; r[1] = 'b'; r[2] = 0;
+
+  const int REPLACE_SIZE = 2; arrayString r = new char[REPLACE_SIZE];
+  r[0] = 'x'; r[1] = 0;
 
 
   // -- Execution
