@@ -27,7 +27,6 @@ using namespace std;
 
 
 typedef char *arrayString;
-typedef int  *arrayInt;
 
 
 
