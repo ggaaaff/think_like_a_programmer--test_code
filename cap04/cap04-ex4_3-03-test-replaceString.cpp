@@ -1,5 +1,5 @@
 //2014.03.10 - 2014.03.11
-//2014.03.13 Gustaf - CTG.
+//2014.03.13 - 2014.03.14 Gustaf - CTG.
 
 
 /* OBJECTIVE :
@@ -21,10 +21,13 @@ For example,
 
 - Function to replace the string.
   ok- Test Mode 01: target (one letter) and replace (one letter).
+
   ok- Test Mode 02: target (one letter) and replace (two letter).
-  - Test Mode 03: target (one letter) and replace (three letter).
-  - Test Mode 04: target (two letter) and replace (three letter).
-  - Test Mode 05: target (three letter) and replace (three letter).
+  ok- Test Mode 03: target (one letter) and replace (three letter).
+
+  ok- Test Mode 04: target (two letter) and replace (one letter).
+  ok- Test Mode 05: target (two letter) and replace (three letter).
+  ok- Test Mode 06: target (three letter) and replace (three letter).
 
 */
 
@@ -88,8 +91,6 @@ void identifyLimits (arrayString sourceStr, arrayString targetStr, posList &posi
   newNode1 = NULL;
   newNode2 = NULL;
 
-  // ---
-
 }
 
 
@@ -115,9 +116,6 @@ void replaceFunction(arrayString &source, arrayString target, arrayString replac
   {
     cout << "DEBUG: Coincidence not found." << endl;
     return;
-
-    // TODO: Test this.
-    cout << "DEBUG: This message should not appear." << endl;
   }
 
   // --
@@ -138,6 +136,32 @@ void replaceFunction(arrayString &source, arrayString target, arrayString replac
   {
     TEST_MODE = 2;
   }
+  if ( tLength == 1 && rLength == 3 )
+  {
+    TEST_MODE = 3;
+  }
+
+
+  if ( tLength == 2 && rLength == 1 )
+  {
+    TEST_MODE = 4;
+  }
+  if ( tLength == 2 && rLength == 3 )
+  {
+    TEST_MODE = 5;
+  }
+  if ( tLength == 3 && rLength == 3 )
+  {
+    TEST_MODE = 6;
+  }
+
+  // Check
+  if (TEST_MODE == 0)
+  {
+    cout << "ERROR: Test mode not defined." << endl;
+    return;
+  }
+
 
 
   // Test Mode 01: target (one letter) and replace (one letter).
@@ -156,7 +180,8 @@ void replaceFunction(arrayString &source, arrayString target, arrayString replac
 
 
   // Test Mode 02: target (one letter) and replace (two letter).
-  if (TEST_MODE == 2)
+  // Test Mode 03: target (one letter) and replace (three letter).
+  if ( (TEST_MODE == 2) || (TEST_MODE == 3) )
   {
 
     // New size for the result string: size of original string,
@@ -176,12 +201,20 @@ void replaceFunction(arrayString &source, arrayString target, arrayString replac
       {
         cout << "DEBUG: (Initial position) " << loopPtr_TWO -> posInitial << endl;
 
-        newS[j] = replace[0];
         cout << "DEBUG: replace 0 "  << endl;
+        newS[j] = replace[0];
         j++;
-        newS[j] = replace[1];
+
         cout << "DEBUG: replace 1 "  << endl;
+        newS[j] = replace[1];
         j++;
+
+        if (rLength == 3)
+        {
+          newS[j] = replace[2];
+          cout << "DEBUG: replace 1 "  << endl;
+          j++;
+        }
 
         loopPtr_TWO = loopPtr_TWO -> next;
       }
@@ -203,9 +236,58 @@ void replaceFunction(arrayString &source, arrayString target, arrayString replac
 
 
 
-  // Test Mode 03: target (one letter) and replace (three letter).
-  // Test Mode 04: target (two letter) and replace (three letter).
-  // Test Mode 05: target (three letter) and replace (three letter).
+  // Test Mode 04: target (two letter) and replace (one letter).
+  // Test Mode 05: target (two letter) and replace (three letter).
+  // Test Mode 06: target (three letter) and replace (three letter).
+  if ( (TEST_MODE == 4) || (TEST_MODE == 5) || (TEST_MODE == 6))
+  {
+
+    // New size for the result string: size of original string,
+    //    minus the letters for all the targets,
+    //    plus the new letters, plus the NULL at the end of the string.
+    int newSizeSource = sLength - (countPos * tLength) + (countPos * rLength) + 1;
+    arrayString newS = new char[newSizeSource];
+    cout << "DEBUG: (Source length - New Source size): " << sLength << " - " << newSizeSource << endl;
+
+
+    int i = 0;
+    int j = 0;
+    int r = 0;
+    posIniNode *loopPtr_FOUR = getResultLimits;
+
+    while ( source[i] != 0)
+    {
+      if ( (loopPtr_FOUR != NULL) && (i == loopPtr_FOUR -> posInitial) )
+      {
+        cout << "DEBUG: (Initial position) " << loopPtr_FOUR -> posInitial << endl;
+
+        r = 0;
+        while (r < rLength)
+        {
+          cout << "DEBUG: replace " << r << endl;
+          newS[j] = replace[r];
+          j++;
+          r++;
+        }
+
+        loopPtr_FOUR = loopPtr_FOUR -> next;
+        i = i + tLength; // Jump to the letter after this target.
+      }
+      else
+      {
+        newS[j] = source[i];
+        i++;
+        j++;
+      }
+    }
+    newS[newSizeSource - 1] = 0; // NULL at the end.
+    cout << "DEBUG: NULL "  << endl;
+
+
+    // -- Free the old value and return the new value.
+    delete[] source;
+    source = newS;
+  }
 
 }
 
@@ -233,27 +315,27 @@ void replaceFunctionTester ()
   // t[0] = 'a'; t[1] = 'b'; t[2] = 'c'; t[3] = 'd';
   // t[4] = 'a'; t[5] = 'b'; t[6] = 'c'; t[7] = 'a'; t[8] = 0;
 
-  // const int TARGET_SIZE = 4;
-  // arrayString t = new char[TARGET_SIZE];
-  // t[0] = 'a'; t[1] = 'b'; t[2] = 'c'; t[3] = 0;
+  const int TARGET_SIZE = 4;
+  arrayString t = new char[TARGET_SIZE];
+  t[0] = 'a'; t[1] = 'b'; t[2] = 'c'; t[3] = 0;
 
   // const int TARGET_SIZE = 3;
   // arrayString t = new char[TARGET_SIZE];
-  // t[0] = 'b'; t[1] = 'c'; t[2] = 0;
+  // t[0] = 'a'; t[1] = 'b'; t[2] = 0;
 
-  const int TARGET_SIZE = 2; arrayString t = new char[TARGET_SIZE];
-  t[0] = 'a'; t[1] = 0;
+  // const int TARGET_SIZE = 2; arrayString t = new char[TARGET_SIZE];
+  // t[0] = 'a'; t[1] = 0;
 
   /// ---
 
 
 
   // -- REPLACE STRING
-  // const int REPLACE_SIZE = 4; arrayString r = new char[REPLACE_SIZE];
-  // r[0] = 'x'; r[1] = 'y'; r[2] = 'z'; r[3] = 0;
+  const int REPLACE_SIZE = 4; arrayString r = new char[REPLACE_SIZE];
+  r[0] = 'x'; r[1] = 'y'; r[2] = 'z'; r[3] = 0;
 
-  const int REPLACE_SIZE = 3; arrayString r = new char[REPLACE_SIZE];
-  r[0] = 'x'; r[1] = 'y'; r[2] = 0;
+  // const int REPLACE_SIZE = 3; arrayString r = new char[REPLACE_SIZE];
+  // r[0] = 'x'; r[1] = 'y'; r[2] = 0;
 
   // const int REPLACE_SIZE = 2; arrayString r = new char[REPLACE_SIZE];
   // r[0] = 'x'; r[1] = 0;
