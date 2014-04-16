@@ -1,4 +1,4 @@
-//2014.03.10 - 2014.03.11 Gustaf - CTG.
+//2014.03.15 Gustaf - CTG.
 
 
 /* OBJECTIVE :
@@ -18,9 +18,13 @@ For example,
 
 === PLAN ===
 
--
--
-
+ok- Function to replace the string.
+  ok- Test 01: target (one letter) and replace (one letter).
+  ok- Test 02: target (one letter) and replace (two letter).
+  ok- Test 03: target (one letter) and replace (three letter).
+  ok- Test 04: target (two letter) and replace (one letter).
+  ok- Test 05: target (two letter) and replace (three letter).
+  ok- Test 06: target (three letter) and replace (three letter).
 
 */
 
@@ -84,8 +88,6 @@ void identifyLimits (arrayString sourceStr, arrayString targetStr, posList &posi
   newNode1 = NULL;
   newNode2 = NULL;
 
-  // ---
-
 }
 
 
@@ -94,46 +96,74 @@ void replaceFunction(arrayString &source, arrayString target, arrayString replac
 {
 
   // -- Get the initial positions of the Target in the Source
-  posList resultLimits = NULL; // Head pointer of linked list.
-  identifyLimits(source, target, resultLimits);
+  posList getResultLimits = NULL; // Head pointer of linked list.
+  identifyLimits(source, target, getResultLimits);
+
 
   // Count
   int countPos = 0;
-  posIniNode *countPtr = resultLimits;
+  posIniNode *countPtr = getResultLimits;
   while (countPtr != NULL)
   {
     countPos++; // Number of target string found.
     countPtr = countPtr -> next;
   }
 
-
+  if (countPos == 0)
+  {
+    cout << "DEBUG: Coincidence not found." << endl;
+    return;
+  }
 
   // --
   int sLength = lengthFunction(source);
   int tLength = lengthFunction(target);
   int rLength = lengthFunction(replace);
 
-  // New size of result string: size of original string, 
-  // minus the letters for all the targets,
-  // plus the new letters, plus the NULL at the end of the string.
+
+  // New size for the result string: size of original string,
+  //    minus the letters for all the targets,
+  //    plus the new letters, plus the NULL at the end of the string.
   int newSizeSource = sLength - (countPos * tLength) + (countPos * rLength) + 1;
   arrayString newS = new char[newSizeSource];
+  cout << "DEBUG: (Source length - New Source size): " << sLength << " - " << newSizeSource << endl;
 
-  posIniNode *loopPtr = resultLimits;
-  while (loopPtr != NULL)
+
+  int i = 0;
+  int j = 0;
+  int r = 0;
+  posIniNode *loopPtr_FOUR = getResultLimits;
+
+  while ( source[i] != 0)
   {
-    cout << "DEBUG: (Initial position) " << loopPtr -> posInitial << endl;
+    if ( (loopPtr_FOUR != NULL) && (i == loopPtr_FOUR -> posInitial) )
+    {
+      cout << "DEBUG: (Initial position) " << loopPtr_FOUR -> posInitial << endl;
 
+      r = 0;
+      while (r < rLength)
+      {
+        cout << "DEBUG: replace " << r << endl;
+        newS[j] = replace[r];
+        j++;
+        r++;
+      }
 
-    source[ loopPtr -> posInitial ] = replace[0];
-
-
-    loopPtr = loopPtr -> next;
+      loopPtr_FOUR = loopPtr_FOUR -> next;
+      i = i + tLength; // Jump to the letter after this target.
+    }
+    else
+    {
+      newS[j] = source[i];
+      i++;
+      j++;
+    }
   }
-  cout << endl;
+  newS[newSizeSource - 1] = 0; // NULL at the end.
+  cout << "DEBUG: NULL "  << endl;
 
 
-  // Free the old value and return the new value
+  // -- Free the old value and return the new value.
   delete[] source;
   source = newS;
 
@@ -151,7 +181,7 @@ void replaceFunctionTester ()
   s[4] = 'a'; s[5] = 'b'; s[6] = 'c'; s[7] = 'e'; s[8] = 0;
 
 
-  // -- Different tests for the TARGET STRING
+  // -- TARGET STRING
 
   // const int TARGET_SIZE = 9;
   // arrayString t = new char[TARGET_SIZE];
@@ -169,21 +199,19 @@ void replaceFunctionTester ()
 
   // const int TARGET_SIZE = 3;
   // arrayString t = new char[TARGET_SIZE];
-  // t[0] = 'b'; t[1] = 'c'; t[2] = 0;
+  // t[0] = 'a'; t[1] = 'b'; t[2] = 0;
 
   const int TARGET_SIZE = 2; arrayString t = new char[TARGET_SIZE];
   t[0] = 'a'; t[1] = 0;
 
-  /// ---
-
 
 
   // -- REPLACE STRING
-  // const int REPLACE_SIZE = 4; arrayString r = new char[REPLACE_SIZE];
-  // r[0] = 'a'; r[1] = 'b'; r[2] = 'c'; r[3] = 0;
+  const int REPLACE_SIZE = 4; arrayString r = new char[REPLACE_SIZE];
+  r[0] = 'x'; r[1] = 'y'; r[2] = 'z'; r[3] = 0;
 
-  const int REPLACE_SIZE = 3; arrayString r = new char[REPLACE_SIZE];
-  r[0] = 'a'; r[1] = 'b'; r[2] = 0;
+  // const int REPLACE_SIZE = 3; arrayString r = new char[REPLACE_SIZE];
+  // r[0] = 'x'; r[1] = 'y'; r[2] = 0;
 
   // const int REPLACE_SIZE = 2; arrayString r = new char[REPLACE_SIZE];
   // r[0] = 'x'; r[1] = 0;
@@ -192,6 +220,8 @@ void replaceFunctionTester ()
   // -- Execution
   cout << "Initial string : " << s << endl;
   cout << "Target string  : " << t << endl;
+  cout << "Replace string : " << r << endl;
+  cout << endl;
 
   replaceFunction(s, t, r);
   cout << "Final string   : " << s << endl;
