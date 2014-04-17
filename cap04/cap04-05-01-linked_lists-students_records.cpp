@@ -104,7 +104,7 @@ int main()
 
 
   // ---
-  studentCollection sc; // First node or head pointer.
+  studentCollection sc = NULL; // First node or head pointer.
 
   // Creating the nodes
   listNode *node1 = new listNode;
