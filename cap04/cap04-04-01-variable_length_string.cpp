@@ -1,4 +1,4 @@
-//2014.03.18 - 2014.03.19 - 2014.03.20 Gustaf - CTG.
+//2014.03.18 - 2014.03.19 - 2014.03.20 - 2014.06.14 Gustaf - CTG.
 
 
 /* P R O B L E M : V A R I A B L E - L E N G T H  S T R I N G  M A N I P U L A T I O N
@@ -57,18 +57,6 @@ int length(arrayString s)
 
 
 
-char characterAt(arrayString s, int position)
-{
-  // NOTICE: Recall from Chapter 3 that if a pointer is assigned the address of an array,
-  // we can access elements in the array using normal array notation
-  return s[position];
-
-  // WARNING: this code places the responsibility of validating 
-  // the second parameter on the caller.
-}
-
-
-
 void append(arrayString &s, char c)
 {
   // NOTICE: The arrayString parameter had to be a reference (&)
@@ -103,28 +91,34 @@ void append(arrayString &s, char c)
 }
 
 
-
 void appendTester()
 {
+  cout << endl << "== Append Test" << endl;
+
   // WARNING: Every time you use the keyword "new", think about where and when
   // the corresponding "delete" will occur.
-  //
+
   // NOTICE: In this case the "delete" will happen inside the "append" function
   // that will be called later.
-  arrayString a = new char[5];
 
+  arrayString a = new char[5];
   a[0] = 't'; a[1] = 'e'; a[2] = 's'; a[3] = 't'; a[4] = 0;
+
   append(a, '!');
   cout << a << endl;
+
+  delete[] a; //2014.06.14 Free the memory allocated inside the call to append.
 
 
   // ---
   arrayString b = new char[1];
   b[0] = 0;
+
   append(b, '!');
   cout << b << endl;
-}
 
+  delete[] b; //2014.06.14 Free the memory allocated inside the call to append.
+}
 
 
 
@@ -144,12 +138,10 @@ void concatenate(arrayString &s1, arrayString s2)
   }
   for (int i = 0; i < s2_Length; i++)
   {
-    newS[s1_OldLength + i] = s2[i];
+    newS[i + s1_OldLength] = s2[i]; //s1_OldLength is an OFFSET.
   }
 
-
   newS[s1_NewLength] = 0; // "null terminator" at the end.
-
 
   // To avoid a memory leak, we have to deallocate the array in the heap
   // that our parameter s1 originally pointed to.
@@ -159,10 +151,10 @@ void concatenate(arrayString &s1, arrayString s2)
 }
 
 
-
-
 void concatenateTester()
 {
+  cout << endl << "== Concatenate Test" << endl;
+
   arrayString a = new char[5];
   a[0] = 't'; a[1] = 'e'; a[2] = 's'; a[3] = 't'; a[4] = 0;
 
@@ -171,6 +163,10 @@ void concatenateTester()
 
   concatenate(a, b);
   cout << a << endl;
+
+  //2014.06.14 Free the memory allocated inside the call to concatenate.
+  delete[] a; 
+  delete[] b; 
 
 
   // ---
@@ -185,6 +181,34 @@ void concatenateTester()
 
   // forces the output stream to display the raw value of the pointers.
   cout << (void *) c << endl << (void *) d << endl; 
+
+  //2014.06.14 Free the memory allocated inside the call to concatenate.
+  delete[] c; 
+  delete[] d;   
+}
+
+
+
+char characterAt(arrayString s, int position)
+{
+  // NOTICE: Recall from Chapter 3 that if a pointer is assigned the address of an array,
+  // we can access elements in the array using normal array notation
+  return s[position];
+
+  // WARNING: this code places the responsibility of validating 
+  // the second parameter on the caller.
+}
+
+
+void characterAtTester()
+{
+  arrayString a = new char[5];
+  a[0] = 't'; a[1] = 'e'; a[2] = 's'; a[3] = 't'; a[4] = 0;
+
+  cout << endl << "== CharacterAt Test" << endl;
+  cout << characterAt(a, 2) << endl;
+
+  delete[] a;
 }
 
 
@@ -195,6 +219,7 @@ int main()
 
   appendTester();
   concatenateTester();
+  characterAtTester();
 
 
   cout << endl;
