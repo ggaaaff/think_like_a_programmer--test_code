@@ -179,7 +179,7 @@ void concatenateTester()
   concatenate(d, c);
   cout << c << endl << d << endl;
 
-  // forces the output stream to display the raw value of the pointers.
+  //TRICK: forces the output stream to display the raw value of the pointers.
   cout << (void *) c << endl << (void *) d << endl; 
 
   //2014.06.14 Free the memory allocated inside the call to concatenate.
