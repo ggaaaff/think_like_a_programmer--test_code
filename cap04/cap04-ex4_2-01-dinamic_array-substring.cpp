@@ -70,13 +70,23 @@ arrayString substringFunct(arrayString s, int position, int lengthDest)
 
 void substringTester()
 {
-  arrayString a = new char[6];
-  arrayString b = new char[4];
-  arrayString c = new char[4];
-  arrayString d = new char[4];
-  arrayString e = new char[4];
-
+  arrayString a = new char[8];
   a[0] = 'a'; a[1] = 'b'; a[2] = 'c'; a[3] = 'd'; a[4] = 'e'; a[5] = 'f'; a[6] = 'g'; a[7] = 0;
+  cout << a << endl;
+  
+  // 2014.06.19 Gustaf. A doubt.
+  // 
+  // Today I realized that I declared variable "a" with a size of 6 (new char [6]), 
+  // but I was initializing it with 8 values.
+  // Then I tested with a size of 1 (new char [1]) and I realize the initialization was OK.
+  // What does this means: 
+  //   A case of memory corruption? Or is this the way dinamyc arrays works?
+
+
+  arrayString b = new char[5];
+  arrayString c = new char[5];
+  arrayString d = new char[5];
+  arrayString e = new char[5];
 
 
   b = substringFunct(a, 3, 4); // Normal case.

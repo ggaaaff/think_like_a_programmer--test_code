@@ -1,4 +1,4 @@
-//2014.03.24 - 2014.03.26 Gustaf - CTG.
+//2014.03.24 - 2014.03.26 - 2014.06.19 Gustaf - CTG.
 
 
 /* EXERCISE 4-1:
@@ -123,6 +123,9 @@ int main()
   outputArray(integerSerie);
 
   cout << "MEDIAN: " << functionMedian(integerSerie, ARRAY_SIZE) << endl;
+
+
+  delete[] integerSerie; //2014.06.19 Gustaf - Free memory.
 
 
   cout << endl;
