@@ -83,11 +83,19 @@ void substringTester()
   //   A case of memory corruption? Or is this the way dinamyc arrays works?
 
 
-  arrayString b = new char[5];
-  arrayString c = new char[5];
-  arrayString d = new char[5];
-  arrayString e = new char[5];
+  // 2014.06.20 Gustaf. Another doubt.
+  // I am not so sure how to free these dinamic arrays.
+  // Because they are created here, but then again inside the function substringFunct.
+  // arrayString b = new char[1];
+  // arrayString c = new char[1];
+  // arrayString d = new char[1];
+  // arrayString e = new char[1];
 
+  // 2014.06.20 Gustaf. I had the idea of just declare the pointers.
+  arrayString b = 0;
+  arrayString c = 0;
+  arrayString d = 0;
+  arrayString e = 0;
 
   b = substringFunct(a, 3, 4); // Normal case.
   cout << b << endl;
