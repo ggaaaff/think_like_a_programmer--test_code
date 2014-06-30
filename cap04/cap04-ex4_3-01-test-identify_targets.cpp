@@ -90,7 +90,7 @@ int main()
       posIni = i;
     }
 
-    // Find second adjacent char, in next cicle.
+    // Find second adjacent char, in next cycle.
     if ( (posIni != -1) && (i == (posIni + 1) ) && (a[i] == targetArray[1]) )
     {
       posFinal = i;
