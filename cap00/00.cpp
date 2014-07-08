@@ -8,7 +8,7 @@ First install the g++ compiler...
 Open terminal ( Ctrl+Alt+t) 
 
 Locate the program file on terminal 
-    g++ programname -o outputfilename
+    g++ programName -o outputFilename
 		
 g++ helloworld.cpp -o hello
 ./hello
@@ -18,7 +18,7 @@ g++ helloworld.cpp -o hello
 
 
 //helloworld.cpp
-//2014.02.24 Gustaf - CTG.
+//2014.07.08 Gustaf-37 - CTG.
 
 
 /* EXERCISE / PROBLEM / OBJECTIVE :
@@ -42,7 +42,7 @@ using namespace std;
 
 int main()
 {
-  cout << "Hello world - Linux Mint." << endl;
+  cout << "Hello world - Linux Mint 15." << endl;
 
   cout << endl;
   return 0;
