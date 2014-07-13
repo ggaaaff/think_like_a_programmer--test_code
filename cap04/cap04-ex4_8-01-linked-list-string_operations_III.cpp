@@ -187,7 +187,7 @@ void removeChars(charCollection &charListResult, int startPos, int positions)
     }//-IF
 
     count++;
-    beforeNode = loopPtr;
+    beforeNode = loopPtr; // Notice its use inside the FOR loop.
 
     if (loopPtr != NULL) // Prevents error: "Segmentation fault (core dumped)"
       loopPtr = loopPtr -> next;
