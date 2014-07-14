@@ -23,8 +23,7 @@ linked list of this sort.
 OK - append function.
 OK - output function.
 OK - intToList function.
-- Read the number from the command line.
-- Tests.
+OK - Tests.
 
 */
 
