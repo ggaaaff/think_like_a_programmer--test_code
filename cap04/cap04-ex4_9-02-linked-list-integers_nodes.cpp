@@ -20,16 +20,13 @@ linked list of this sort.
 
 === PLAN ===
 
-OK - append function.
-OK - output function.
-OK - intToList function.
-
-
 OK - Reuse code from:
-/cap02-ex2_7-02-test_decimal_to_hexadecimal.cpp
-/cap04-ex4_3-02-test-identify_targets-function.cpp
+  /cap02-ex2_7-02-test_decimal_to_hexadecimal.cpp
+  /cap04-ex4_3-02-test-identify_targets-function.cpp
 
-
+OK - output function.
+OK - push function.
+OK - intToList function.
 OK - Read the number from the command line.
 OK - Tests.
 
