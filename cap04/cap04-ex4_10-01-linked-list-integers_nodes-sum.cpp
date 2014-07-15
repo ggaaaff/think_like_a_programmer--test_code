@@ -18,7 +18,6 @@ OK - Reuse code from:
 OK - Sum lists function.
 OK - List to integer function.
 
-
 */
 
 
@@ -118,6 +117,7 @@ digitCollection sumLists(digitCollection listA, digitCollection listB)
   // -- Transform the integer and voila!
   digitCollection intListResult = NULL;
   intToList(intListResult, intSum);
+
   return intListResult;
 }
 
