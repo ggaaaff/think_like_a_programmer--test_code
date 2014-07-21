@@ -1,4 +1,5 @@
-//2014.07.20 Gustaf-37 - CTG.
+//2014.07.20 - 2014.07.21 Gustaf-37 - CTG.
+
 
 
 /* PROBLEM  :
@@ -31,8 +32,12 @@ so it must be implemented efficiently.
 
 === PLAN ===
 
+OK - Reuse class studentRecord from code:
+  /cap05-02-02-class_roster-support_methods.cpp
+
 -
--
+
+
 
 */
 
@@ -44,14 +49,123 @@ so it must be implemented efficiently.
 using namespace std;
 
 
-struct studentRecord
+
+// -----------------------------------------------------------------------------
+
+class studentRecord
 {
-  int studentNum;
-  string name;
-  int grade;
+public:
+  studentRecord();
+  studentRecord(int newGrade, int newID, string newName);
+
+  int grade();
+  void setGrade(int newGrade);
+
+  int studentID();
+  void setStudentID(int newID);
+
+  string name();
+  void setName(string newName);
+
+  // Support Methods
+  string letterGrade();
+
+protected:
+  bool isValidGrade(int grade);
+
+private:
+  int _grade;
+  int _studentID;
+  string _name;
 };
 
 
+// -- Public Methods --
+
+studentRecord::studentRecord()
+{
+  // Values that indicate the object is not properly initialized.
+  setGrade(0);
+  setStudentID(-1); //Notice: invalid ID.
+  setName("");
+}
+
+studentRecord::studentRecord(int newGrade, int newID, string newName)
+{
+  setGrade(newGrade);
+  setStudentID(newID);
+  setName(newName);
+}
+
+
+int studentRecord::grade()
+{
+  return _grade;
+}
+
+void studentRecord::setGrade(int newGrade)
+{
+  if (isValidGrade(newGrade))
+  {
+    _grade = newGrade;
+  }
+}
+
+
+int studentRecord::studentID()
+{
+  return _studentID;
+}
+
+void studentRecord::setStudentID(int newID)
+{
+  _studentID = newID;
+}
+
+
+string studentRecord::name()
+{
+  return _name;
+}
+
+void studentRecord::setName(string newName)
+{
+  _name = newName;
+}
+
+
+string studentRecord::letterGrade()
+{
+  if (!isValidGrade(_grade))
+    return "ERROR";
+
+  const int NUMBER_CATEGORIES = 11;
+  const string GRADE_LETTER[] = {"F", "D", "D+", "C-", "C", "C+", "B-", "B", "B+", "A-", "A"};
+  const int LOWEST_GRADE_SCORE[] = {0, 60, 67, 70, 73, 77, 80, 83, 87, 90, 93};
+
+  int category = 0;
+  while (category < NUMBER_CATEGORIES && LOWEST_GRADE_SCORE[category] <= _grade)
+    category++;
+
+  return GRADE_LETTER[category - 1];
+}
+
+
+
+// -- Protected Methods --
+
+bool studentRecord::isValidGrade(int grade)
+{
+  if ((grade >= 0) && (grade <= 100))
+    return true;
+  else
+    return false;
+}
+
+
+
+
+// -----------------------------------------------------------------------------
 
 class studentCollection
 {
@@ -74,6 +188,53 @@ private:
   typedef studentNode *studentList;
   studentList _listHead;
 };
+
+
+
+studentCollection::studentCollection()
+{
+  _listHead = NULL; // Initialization.
+}
+
+
+void studentCollection::addRecord(studentRecord newStudent)
+{
+  studentNode *newNode   = new studentNode;
+  newNode -> studentData = newStudent;
+
+  // Link at the beginning
+  newNode -> next = _listHead;
+  _listHead = newNode;
+}
+
+
+studentRecord studentCollection::recordWithNumber(int idNum)
+{
+  /*
+   WARNING: The function that calls this method is responsible for checking the
+   studentRecord that comes back and making sure it’s not the dummy record
+   before further processing.
+  */
+
+  studentNode *loopPtr = _listHead;
+  while ( (loopPtr != NULL) && (loopPtr -> studentData.studentID() != idNum) )
+  {
+    loopPtr = loopPtr -> next;
+  }
+
+  if (loopPtr == NULL)
+  {
+    // If the list is empty or couldn't find the ID, then creates a fake record.
+    studentRecord dummyRecord(-1, -1, ""); 
+    return dummyRecord;
+  }
+  else
+  {
+    return loopPtr -> studentData;
+  }
+
+}
+
 
 
 int main()
