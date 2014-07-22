@@ -1,10 +1,10 @@
-//2014.07.20 - 2014.07.21 Gustaf-37 - CTG.
+//2014.07.20 - 2014.07.21 - 2014.07.22 Gustaf-37 - CTG.
 
 
 
 /* PROBLEM  :
 
-T R A C K I N G   A N   U N K N O W N  Q U A N T I T Y   O F   S TU D E N T   R E C O R D S
+T R A C K I N G   A N   U N K N O W N   Q U A N T I T Y   O F   S TU D E N T   R E C O R D S
 
 In this problem, you will write a class with methods to store and manipulate a collection
 of student records. A student record contains a student number and a grade,
@@ -178,7 +178,8 @@ private:
   };
 
 public:
-  studentCollection();
+  studentCollection();  // constructor
+  ~studentCollection(); // destructor
 
   void addRecord(studentRecord newStudent);
   void removeRecord(int idNum);
@@ -187,13 +188,21 @@ public:
 private:
   typedef studentNode *studentList;
   studentList _listHead;
+
+  void deleteList(studentList &listPtr);
 };
 
 
 
 studentCollection::studentCollection()
 {
-  _listHead = NULL; // Initialization.
+  _listHead = NULL; // initialization.
+}
+
+
+studentCollection::~studentCollection()
+{
+  deleteList(_listHead); // cleans memory.
 }
 
 
@@ -225,7 +234,7 @@ studentRecord studentCollection::recordWithNumber(int idNum)
   if (loopPtr == NULL)
   {
     // If the list is empty or couldn't find the ID, then creates a fake record.
-    studentRecord dummyRecord(-1, -1, ""); 
+    studentRecord dummyRecord(-1, -1, "");
     return dummyRecord;
   }
   else
@@ -236,10 +245,66 @@ studentRecord studentCollection::recordWithNumber(int idNum)
 }
 
 
+void studentCollection::removeRecord(int idNum)
+{
+  studentNode *trailing = NULL;
+
+  // Finding the ID
+  studentNode *loopPtr = _listHead;
+  while (loopPtr != NULL && loopPtr -> studentData.studentID() != idNum)
+  {
+    trailing = loopPtr;
+    loopPtr  = loopPtr -> next;
+  }
+
+  // list is empty or couldn't find the ID.
+  if (loopPtr == NULL)
+    return;
+
+  // New link that "removes" the node.
+  if (trailing == NULL)
+  {
+    _listHead = _listHead -> next;
+  }
+  else
+  {
+    trailing -> next = loopPtr -> next;
+  }
+
+  delete loopPtr; // Clean memory.
+}
+
+
+void studentCollection::deleteList(studentList &listPtr)
+{
+  while (listPtr != NULL)
+  {
+    studentNode *temp = listPtr;
+
+    listPtr = listPtr -> next;
+    delete temp;
+  }
+}
+
+
 
 int main()
 {
-  cout << "Hello world - Linux Mint 15." << endl;
+  cout << "Tracking students records (with a linked list wrapped out by a class)." << endl;
+
+
+  // Test I
+  studentCollection s;
+
+  studentRecord stu3(84, 1152, "Sue");
+  studentRecord stu2(75, 4875, "Ed");
+  studentRecord stu1(98, 2938, "Todd");
+  s.addRecord(stu3);
+  s.addRecord(stu2);
+  s.addRecord(stu1);
+
+  s.removeRecord(4875);
+
 
   cout << endl;
   return 0;
