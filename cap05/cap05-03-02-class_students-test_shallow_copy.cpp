@@ -334,17 +334,19 @@ int main()
   studentRecord r2(77, 4765, "Elsie");
   s2.addRecord(r2);
 
-  cout << "========= BEFORE ASIGNATION =========" << endl;
+  cout << "========= BEFORE ASSIGNATION =========" << endl;
   s1.outputList("S1");
   s2.outputList("S2");
 
 
-  // NOTICE: By default, when one object is assigned to another, C++ performs what is known
-  // as a {shallow copy}: each data member of one object is directly assigned to the other.
+  // NOTICE: By default, when one object is assigned to another, C++ performs 
+  // what is known as a {shallow copy}: each data member of one object is 
+  // directly assigned to the other.
   s1 = s2;
 
-  cout << "========= AFTER ASIGNATION =========" << endl;
-  // WARNING: This leaves the _listHead data member of both objects pointing at the same place in memory.
+  cout << "========= AFTER ASSIGNATION =========" << endl;
+  // WARNING: This leaves the _listHead data member of both objects pointing at 
+  // the same place in memory.
   s1.outputList("S1");
   s2.outputList("S2");
 
@@ -353,9 +355,9 @@ int main()
   cout << "===========  TEST I ===========" << endl << endl;
   s2.removeRecord(99837); // last node.
 
-  cout << "========= AFTER REMOVE =========" << endl;
-  // When the node for "John" is removed, it’s apparently removed from two lists because
-  // there is actually only one list.
+  cout << "========= AFTER REMOVE John =========" << endl;
+  // When the node for "John" is removed, it’s apparently removed from two lists 
+  // because there is actually only one list.
   s1.outputList("S1");
   s2.outputList("S2");
 
@@ -377,13 +379,14 @@ int main()
   cout << "===========  TEST III ===========" << endl << endl;
   s2.removeRecord(4765);
 
-  cout << "========= AFTER REMOVE =========" << endl;
-  // The _listHead inside s2 would have been updated to point to "John",
+  cout << "========= AFTER REMOVE Elsie =========" << endl;
+  // The _listHead inside s2 would have been updated to point to "Carlos",
   // and the "Elsie" node would have been deleted.
   // The _listHead inside s1, however, would still point to the deleted "Elsie" node,
   // a dangerous dangling reference.
   s2.outputList("S2");
-  s1.outputList("S1"); //WARNING: this generates an ERROR, because the node ("Elsie") no longer exist.
+  s1.outputList("S1"); //WARNING: this line generates the ERROR: 
+  // "Segmentation fault (core dumped)". Because the node ("Elsie") no longer exist.
 
 
 
