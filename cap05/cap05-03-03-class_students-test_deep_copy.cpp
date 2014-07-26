@@ -1,4 +1,4 @@
-//2014.07.25 Gustaf-37 - CTG.
+//2014.07.25 - 2014.07.26 Gustaf-37 - CTG.
 
 
 
@@ -36,7 +36,7 @@ OK - Copy and paste code from:
 /cap05-03-02-class_students-test_shallow_copy.cpp
 
 
- - Test deep copy.
+OK - Test deep copy.
 
 
 */
@@ -180,20 +180,23 @@ private:
 public:
   studentCollection();  // constructor
   ~studentCollection(); // destructor
+  studentCollection(const studentCollection &original); // copy constructor
+
+  studentCollection &operator=(const studentCollection &rhs); // operator overloading
+
 
   void addRecord(studentRecord newStudent);
   void removeRecord(int idNum);
   studentRecord recordWithNumber(int idNum);
 
   void outputList(string strList);
-  studentCollection &operator=(const studentCollection &rhs); // operator overloading.
 
 private:
   typedef studentNode *studentList;
   studentList _listHead;
 
   void deleteList(studentList &listPtr);
-  studentList copiedList(const studentList original); // helper method for deep copy.
+  studentList copiedList(const studentList original); // helper method for deep copy
 };
 
 
@@ -321,7 +324,7 @@ void studentCollection::outputList(string strList)
 
 studentCollection::studentList studentCollection::copiedList(const studentList original)
 {
-  // 2014.07.25 Gustaf - the names for the variables confused me.
+  // 2014.07.25 Gustaf 
   // newLoopPtr - refers to the new list.
   // oldLoopPtr - refers to the source list.
 
@@ -362,7 +365,7 @@ studentCollection::studentList studentCollection::copiedList(const studentList o
 
 studentCollection &studentCollection::operator=(const studentCollection &rhs)
 {
-  // Operator overloading
+  // Operator overloading:
   // is a feature of C++ that allows us to change what the built-in operators
   // do with certain types.
 
@@ -370,10 +373,15 @@ studentCollection &studentCollection::operator=(const studentCollection &rhs)
   // so that instead of the default shallow copy, it calls our copiedList method
   // to perform a deep copy.
 
-  
-  // check that the object on the right-hand side is different 
+  // NOTICE: the parameter rhs is passed as constant reference because it is not
+  // modified in this method.
+
+
+  // check that the object on the right-hand side is different
   // from the object on the left-hand side
-  if (this != &rhs) 
+
+  // 2014.07.26 Gustaf - I am not sure about the meaning of all these & and *.
+  if (this != &rhs)
   {
     deleteList(_listHead);
     _listHead = copiedList(rhs._listHead);
@@ -383,9 +391,28 @@ studentCollection &studentCollection::operator=(const studentCollection &rhs)
 
 
 
+studentCollection::studentCollection(const studentCollection &original)
+{
+  // Copy Constructor:
+  // This is a constructor that takes another object of the same class as an object.
+
+  // Can be invoked explicitly whenever we need to create a duplicate of 
+  // an existing studentCollection.
+  // Can invoked implicitly whenever an object of that class is passed as 
+  // a value parameter to a function.
+
+  // You should consider passing object parameters as const references
+  // instead of value parameters 
+  // unless the function receiving the object needs to modify the copy.
+
+  _listHead = copiedList(original._listHead);
+}
+
+
+
 int main()
 {
-  cout << "Tracking students records (Deep Copy)." << endl;
+  cout << "Tracking students records (Deep Copy with Operator overloading)." << endl;
 
 
   // -- Common code to the tests
@@ -403,7 +430,7 @@ int main()
 
 
   // NOTICE: By default, when one object is assigned to another, C++ performs
-  // what is known as a shallow copy. 
+  // what is known as a shallow copy.
   // BUT here we are using Operator Overload to perform a DEEP COPY.
   s1 = s2;
 
@@ -447,8 +474,14 @@ int main()
   // The _listHead inside s1, no longer has the dangerous dangling reference.
   s1.outputList("S1"); //NOTICE: this line NO LONGER generates an ERROR.
   s2.outputList("S2");
-  
 
+
+
+  // -- Test VI
+  cout << "===========  TEST VI ===========" << endl << endl;
+  // Declares s3 and copy the nodes of s1 into it.
+  studentCollection s3(s1);
+  s3.outputList("S3");
 
 
   cout << endl;
